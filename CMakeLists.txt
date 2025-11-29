@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
-project(CMakeSFMLProject LANGUAGES CXX)
+
+project(clicker LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -12,6 +13,14 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp)
-target_compile_features(main PRIVATE cxx_std_17)
-target_link_libraries(main PRIVATE SFML::Graphics)
+file(GLOB_RECURSE CLICKER_SRC_FILE CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/clicker/src/*")
+#file(GLOB_RECURSE CLICKER_SRC_FILE CONFIGURE_DEPENDS "./src/clicker/*")
+
+add_executable(clicker ${CLICKER_SRC_FILE})
+
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+target_include_directories(clicker PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/clicker/include/")
+
+target_compile_features(clicker PRIVATE cxx_std_20)
+target_link_libraries(clicker PRIVATE SFML::Graphics)
+
