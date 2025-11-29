@@ -6,22 +6,6 @@
 
 #include "SFML/Graphics/RenderWindow.hpp"
 
-IGameScene::IGameScene(const std::weak_ptr<sf::RenderWindow> &renderer) noexcept
+void IGameScene::Render(const std::weak_ptr<sf::RenderWindow> &)
 {
-    m_windowPtr = renderer;
-}
-void IGameScene::Clear()
-{
-    if (auto renderer = m_windowPtr.lock())
-    {
-        renderer.get()->clear(sf::Color::Black);
-    }
-}
-void IGameScene::Render()
-{
-}
-void IGameScene::Rerender()
-{
-    Clear();
-    Render();
 }

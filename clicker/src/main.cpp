@@ -1,10 +1,32 @@
+#include "GUI/Scenes/MainScene.h"
 #include "Game.h"
-
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics/RenderWindow.hpp"
 
 int main()
 {
-    Game::Init();
+    Game::Start();
     Game::SetFrameRate(144);
-    Game::Update();
+
+    const auto mainScene = std::make_shared<MainScene>();
+
+    Game::SetScene(std::weak_ptr(mainScene));
+
+    const auto window = Game::GetWindow().lock();
+
+    const auto onKeyPressed = [&window, &mainScene](const sf::Event::KeyPressed &keyPressed)
+    {
+        if (keyPressed.scancode == sf::Keyboard::Scancode::Space)
+        {
+            mainScene->AddGold(1);
+        }
+    };
+    const auto onExit = [&window](const sf::Event::Closed &exit)
+    {
+        Game::Exit();
+    };
+
+    while (Game::Update())
+    {
+        window->handleEvents(onKeyPressed, onExit);
+    }
 }

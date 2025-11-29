@@ -6,13 +6,25 @@
 #define CLICKER_MAINSCENE_H
 #include "IGameScene.h"
 
+namespace sf
+{
+class Text;
+} // namespace sf
+
 class MainScene final : public IGameScene
 {
-    explicit MainScene(sf::RenderWindow &) noexcept;
+  public:
+    MainScene();
 
-    void Render() override
-    {
-    }
+  protected:
+    uint32_t                  m_gold = 0;
+    std::shared_ptr<sf::Text> m_goldText;
+
+  protected:
+    void Render(const std::weak_ptr<sf::RenderWindow> &) override;
+
+  public:
+    void AddGold(const uint32_t amount);
 };
 
 #endif // CLICKER_MAINSCENE_H

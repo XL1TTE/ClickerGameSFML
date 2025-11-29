@@ -11,6 +11,8 @@ namespace sf
 class RenderWindow;
 }
 
+class IGameScene;
+
 class Game final
 {
   public:
@@ -27,18 +29,28 @@ class Game final
   private:
     static std::unique_ptr<Game> m_instance;
 
+    std::weak_ptr<IGameScene> m_currentScene;
+
   public:
     std::shared_ptr<sf::RenderWindow> m_windowPtr;
 
   private:
-    void        UpdateWindow() noexcept;
+    static void UpdateWindow() noexcept;
+
     static bool IsInitialized() noexcept;
 
   public:
-    static Game &Init() noexcept;
-    static void  Update();
+    static Game &Start() noexcept;
 
-    static void SetFrameRate(uint8_t limit) noexcept;
+    /**
+     * \brief Game's update loop.
+     * \return False if game was closed.
+     */
+    static bool                            Update();
+    static std::weak_ptr<sf::RenderWindow> GetWindow();
+    static void                            SetScene(const std::weak_ptr<IGameScene> &scene);
+    static void                            SetFrameRate(uint8_t limit) noexcept;
+    static void                            Exit() noexcept;
 };
 
 #endif // CLICKER_GAME_H

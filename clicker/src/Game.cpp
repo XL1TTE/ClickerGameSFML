@@ -3,19 +3,20 @@
 //
 
 #include "../include/Game.h"
+
+#include "GUI/Scenes/IGameScene.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 std::unique_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game() noexcept
-    : m_windowPtr(std::make_unique<sf::RenderWindow>(
+    : m_windowPtr(std::make_shared<sf::RenderWindow>(
           sf::VideoMode({640u, 800u}),
           "Clicker",
-          sf::Style::Titlebar | sf::Style::Close))
+          sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize))
 {
 }
 
-// ReSharper disable once CppMemberFunctionMayBeStatic
 void Game::UpdateWindow() noexcept
 {
     if (!IsInitialized())
@@ -24,19 +25,15 @@ void Game::UpdateWindow() noexcept
     }
 
     const auto window = m_instance->m_windowPtr;
-    while (window->isOpen())
-    {
-        while (const std::optional event = window->pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-            {
-                window->close();
-            }
-        }
 
-        window->clear();
-        window->display();
+    window->clear();
+
+    if (const auto scene = m_instance->m_currentScene.lock())
+    {
+        scene->Render(window);
     }
+
+    window->display();
 }
 
 bool Game::IsInitialized() noexcept
@@ -44,7 +41,7 @@ bool Game::IsInitialized() noexcept
     return m_instance != nullptr;
 }
 
-Game &Game::Init() noexcept
+Game &Game::Start() noexcept
 {
     if (IsInitialized() == false)
     {
@@ -53,19 +50,41 @@ Game &Game::Init() noexcept
     return *m_instance;
 }
 
-void Game::Update()
+bool Game::Update()
 {
     if (IsInitialized() == false)
     {
-        return;
+        return false;
     }
-    m_instance->UpdateWindow();
+    if (const auto window = m_instance->m_windowPtr; window->isOpen())
+    {
+        UpdateWindow();
+    }
+
+    return true;
 }
-void Game::SetFrameRate(uint8_t limit) noexcept
+std::weak_ptr<sf::RenderWindow> Game::GetWindow()
+{
+    return m_instance->m_windowPtr;
+}
+
+void Game::SetScene(const std::weak_ptr<IGameScene> &scene)
 {
     if (IsInitialized() == false)
     {
         return;
     }
-    m_instance->m_windowPtr->setFramerateLimit(144);
+    m_instance->m_currentScene = scene;
+}
+void Game::SetFrameRate(const uint8_t limit) noexcept
+{
+    if (IsInitialized() == false)
+    {
+        return;
+    }
+    m_instance->m_windowPtr->setFramerateLimit(limit);
+}
+void Game::Exit() noexcept
+{
+    m_instance = nullptr;
 }
