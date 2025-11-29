@@ -5,10 +5,13 @@
 #ifndef CLICKER_IGAMESCENE_H
 #define CLICKER_IGAMESCENE_H
 #include <memory>
+#include <vector>
+
+class GameObject;
 
 namespace sf
 {
-class RenderWindow;
+class RenderTarget;
 }
 
 class IGameScene
@@ -25,10 +28,18 @@ class IGameScene
     virtual ~IGameScene() = default;
 
   protected:
-    std::weak_ptr<sf::RenderWindow> m_windowPtr;
+    explicit IGameScene(const std::weak_ptr<sf::RenderTarget> &);
+
+  protected:
+    std::vector<std::shared_ptr<GameObject>> m_Objects;
+
+  protected:
+    void WithObject(const std::shared_ptr<GameObject> &obj);
 
   public:
-    virtual void Render(const std::weak_ptr<sf::RenderWindow> &);
+    void Awake() const;
+    void Update(const float &dt) const;
+    void Draw(const std::weak_ptr<sf::RenderTarget> &) const;
 };
 
 #endif // CLICKER_IGAMESCENE_H

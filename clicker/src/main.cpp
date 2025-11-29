@@ -1,17 +1,18 @@
+#include "Behaviour/GameObject.h"
 #include "GUI/Scenes/MainScene.h"
 #include "Game.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 int main()
 {
-    Game::Start();
+    Game::New();
     Game::SetFrameRate(144);
 
-    const auto mainScene = std::make_shared<MainScene>();
+    const auto window = Game::GetWindow().lock();
+
+    const auto mainScene = std::make_shared<MainScene>(window);
 
     Game::SetScene(std::weak_ptr(mainScene));
-
-    const auto window = Game::GetWindow().lock();
 
     const auto onKeyPressed = [&window, &mainScene](const sf::Event::KeyPressed &keyPressed)
     {
@@ -25,8 +26,12 @@ int main()
         Game::Exit();
     };
 
-    while (Game::Update())
+    while (Game::IsExist())
     {
+        Game::Update();
+
+        Game::UpdateScreen();
+
         window->handleEvents(onKeyPressed, onExit);
     }
 }

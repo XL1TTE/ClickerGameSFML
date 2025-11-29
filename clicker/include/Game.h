@@ -34,22 +34,19 @@ class Game final
   public:
     std::shared_ptr<sf::RenderWindow> m_windowPtr;
 
-  private:
-    static void UpdateWindow() noexcept;
-
-    static bool IsInitialized() noexcept;
-
   public:
-    static Game &Start() noexcept;
+    static Game &New() noexcept;
 
     /**
      * \brief Game's update loop.
      * \return False if game was closed.
      */
-    static bool                            Update();
+    static void                            Update();
+    static void                            UpdateScreen() noexcept;
     static std::weak_ptr<sf::RenderWindow> GetWindow();
     static void                            SetScene(const std::weak_ptr<IGameScene> &scene);
     static void                            SetFrameRate(uint8_t limit) noexcept;
+    static bool                            IsExist() noexcept;
     static void                            Exit() noexcept;
 };
 

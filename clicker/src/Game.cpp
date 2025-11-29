@@ -17,9 +17,9 @@ Game::Game() noexcept
 {
 }
 
-void Game::UpdateWindow() noexcept
+void Game::UpdateScreen() noexcept
 {
-    if (!IsInitialized())
+    if (!IsExist())
     {
         return;
     }
@@ -30,38 +30,32 @@ void Game::UpdateWindow() noexcept
 
     if (const auto scene = m_instance->m_currentScene.lock())
     {
-        scene->Render(window);
+        scene->Draw(window);
     }
 
     window->display();
 }
 
-bool Game::IsInitialized() noexcept
+bool Game::IsExist() noexcept
 {
     return m_instance != nullptr;
 }
 
-Game &Game::Start() noexcept
+Game &Game::New() noexcept
 {
-    if (IsInitialized() == false)
+    if (IsExist() == false)
     {
         m_instance = std::make_unique<Game>();
     }
     return *m_instance;
 }
 
-bool Game::Update()
+void Game::Update()
 {
-    if (IsInitialized() == false)
+    if (IsExist() == false)
     {
-        return false;
+        return;
     }
-    if (const auto window = m_instance->m_windowPtr; window->isOpen())
-    {
-        UpdateWindow();
-    }
-
-    return true;
 }
 std::weak_ptr<sf::RenderWindow> Game::GetWindow()
 {
@@ -70,7 +64,7 @@ std::weak_ptr<sf::RenderWindow> Game::GetWindow()
 
 void Game::SetScene(const std::weak_ptr<IGameScene> &scene)
 {
-    if (IsInitialized() == false)
+    if (IsExist() == false)
     {
         return;
     }
@@ -78,7 +72,7 @@ void Game::SetScene(const std::weak_ptr<IGameScene> &scene)
 }
 void Game::SetFrameRate(const uint8_t limit) noexcept
 {
-    if (IsInitialized() == false)
+    if (IsExist() == false)
     {
         return;
     }

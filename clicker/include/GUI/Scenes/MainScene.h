@@ -14,14 +14,11 @@ class Text;
 class MainScene final : public IGameScene
 {
   public:
-    MainScene();
+    explicit MainScene(const std::weak_ptr<sf::RenderTarget> &);
 
   protected:
-    uint32_t                  m_gold = 0;
-    std::shared_ptr<sf::Text> m_goldText;
-
-  protected:
-    void Render(const std::weak_ptr<sf::RenderWindow> &) override;
+    uint32_t                     m_gold = 999999999;
+    std::shared_ptr<std::string> m_goldText;
 
   public:
     void AddGold(const uint32_t amount);
