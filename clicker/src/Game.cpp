@@ -10,10 +10,11 @@
 std::unique_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game() noexcept
-    : m_windowPtr(std::make_shared<sf::RenderWindow>(
+    : m_signalBus(std::make_shared<SignalBus>()),
+      m_windowPtr(std::make_shared<sf::RenderWindow>(
           sf::VideoMode({640u, 800u}),
           "Clicker",
-          sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize))
+          sf::Style::Titlebar | sf::Style::Close))
 {
 }
 
@@ -48,6 +49,15 @@ Game &Game::New() noexcept
         m_instance = std::make_unique<Game>();
     }
     return *m_instance;
+}
+SignalBus &Game::GetBus() noexcept
+{
+    if (m_instance->m_signalBus == nullptr)
+    {
+        m_instance->m_signalBus = std::make_shared<SignalBus>();
+        return *m_instance->m_signalBus;
+    }
+    return *m_instance->m_signalBus;
 }
 
 void Game::Update()

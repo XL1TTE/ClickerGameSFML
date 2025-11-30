@@ -1,7 +1,10 @@
 #include "Behaviour/GameObject.h"
+#include "G.h"
 #include "GUI/Scenes/MainScene.h"
 #include "Game.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SignalBus/SignalBus.h"
+#include "SignalBus/Signals/Signals.h"
 
 int main()
 {
@@ -18,7 +21,8 @@ int main()
     {
         if (keyPressed.scancode == sf::Keyboard::Scancode::Space)
         {
-            mainScene->AddGold(1);
+            G::AddGold(1);
+            Game::GetBus().publish(GoldChangedSignal(G::GetGold()));
         }
     };
     const auto onExit = [&window](const sf::Event::Closed &exit)

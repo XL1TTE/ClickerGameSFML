@@ -19,9 +19,6 @@ class GameText : public GameObject
   public:
     explicit GameText(const sf::Font &);
 
-  public:
-    std::weak_ptr<std::string> m_linkedText;
-
   protected:
     std::unique_ptr<sf::Text> m_textView;
 
@@ -29,7 +26,6 @@ class GameText : public GameObject
     void Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 
   public:
-    GameText          &LinkText(const std::weak_ptr<std::string> &);
     GameText          &SetText(const std::string &text);
     GameText          &SetColor(const sf::Color color);
     GameText          &SetFontSize(const unsigned int size);

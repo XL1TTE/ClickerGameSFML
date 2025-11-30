@@ -4,6 +4,8 @@
 
 #ifndef CLICKER_GAME_H
 #define CLICKER_GAME_H
+#include "SignalBus/SignalBus.h"
+
 #include <memory>
 
 namespace sf
@@ -29,13 +31,15 @@ class Game final
   private:
     static std::unique_ptr<Game> m_instance;
 
-    std::weak_ptr<IGameScene> m_currentScene;
+    std::weak_ptr<IGameScene>  m_currentScene;
+    std::shared_ptr<SignalBus> m_signalBus;
 
   public:
     std::shared_ptr<sf::RenderWindow> m_windowPtr;
 
   public:
-    static Game &New() noexcept;
+    static Game      &New() noexcept;
+    static SignalBus &GetBus() noexcept;
 
     /**
      * \brief Game's update loop.

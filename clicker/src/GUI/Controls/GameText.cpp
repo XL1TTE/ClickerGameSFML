@@ -15,19 +15,9 @@ void GameText::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
 {
     GameObject::Draw(drawer);
 
-    if (m_linkedText.expired() == false)
-    {
-        SetText(*m_linkedText.lock());
-    }
-
     AlignCenter();
 
     drawer.lock()->draw(*m_textView);
-}
-GameText &GameText::LinkText(const std::weak_ptr<std::string> &link)
-{
-    m_linkedText = link;
-    return *this;
 }
 GameText &GameText::SetText(const std::string &text)
 {

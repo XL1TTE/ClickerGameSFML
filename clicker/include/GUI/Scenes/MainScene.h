@@ -15,13 +15,6 @@ class MainScene final : public IGameScene
 {
   public:
     explicit MainScene(const std::weak_ptr<sf::RenderTarget> &);
-
-  protected:
-    uint32_t                     m_gold = 999999999;
-    std::shared_ptr<std::string> m_goldText;
-
-  public:
-    void AddGold(const uint32_t amount);
 };
 
 #endif // CLICKER_MAINSCENE_H
