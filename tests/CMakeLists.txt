@@ -20,9 +20,7 @@ target_compile_features(signal_bus_tests PRIVATE cxx_std_20)
 # Линковка
 target_link_libraries(signal_bus_tests
         PRIVATE
-        GTest::gtest
-        GTest::gtest_main
-        signal_bus  # Или конкретные файлы
+        test_dependencies
 )
 
 include(GoogleTest)

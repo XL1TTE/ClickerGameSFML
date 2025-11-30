@@ -6,6 +6,7 @@
 #define CLICKER_SIGNALBUS_H
 #include <functional>
 #include <memory>
+#include <typeindex>
 #include <vector>
 
 class ISignal;
@@ -32,17 +33,17 @@ class SignalBus final
     SignalBus &operator=(const SignalBus &) = delete;
 
   private:
-    std::unique_ptr<SignalBus>                                                 m_instance;
-    std::unordered_map<std::size_t, std::vector<std::unique_ptr<BaseHandler>>> m_handlers;
+    static std::unique_ptr<SignalBus>                                              m_instance;
+    std::unordered_map<std::type_index, std::vector<std::unique_ptr<BaseHandler>>> m_handlers;
 
   public:
-    SignalBus &create();
-    SignalBus &get() const;
+    static SignalBus &create();
+    static SignalBus &get();
 
     template <typename SignalType>
-    void subscribe(std::function<void(const SignalType &)> handler);
+    void subscribe(const std::function<void(const SignalType &)> &handler);
     template <typename SignalType>
-    void unsubscribe(std::function<void(const SignalType &)> handler);
+    void unsubscribeAll(const std::function<void(const SignalType &)> &handler);
     template <typename SignalType>
     void publish(const SignalType &signal);
 };

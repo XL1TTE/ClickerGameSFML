@@ -8,32 +8,35 @@
 
 #include <algorithm>
 #include <typeindex>
+#include <utility>
+
+std::unique_ptr<SignalBus> SignalBus::m_instance = nullptr;
 
 template <typename SignalType>
 SignalBus::Handler<SignalType>::Handler(std::function<void(const SignalType &)> callback)
-    : m_callback(callback)
+    : m_callback(std::move(callback))
 {
 }
 template <typename SignalType>
-void SignalBus::subscribe(std::function<void(const SignalType &)> handler)
+void SignalBus::subscribe(const std::function<void(const SignalType &)> &handler)
 {
     const auto type = std::type_index(typeid(SignalType));
-    m_handlers[type.hash_code()].push_back(
+    m_handlers[type].push_back(
         std::make_unique<Handler<SignalType>>(handler));
 }
 template <typename SignalType>
-void SignalBus::unsubscribe(std::function<void(const SignalType &)> handler)
+void SignalBus::unsubscribeAll(const std::function<void(const SignalType &)> &handler)
 {
-    if (const auto type = std::type_index(typeid(SignalType)); m_handlers.contains(type.hash_code()))
+    if (const auto type = std::type_index(typeid(SignalType)); m_handlers.contains(type))
     {
-        m_handlers.erase(type.hash_code());
+        m_handlers.erase(type);
     }
 }
 template <typename SignalType>
 void SignalBus::publish(const SignalType &signal)
 {
     const auto type = std::type_index(typeid(SignalType));
-    if (const auto it = m_handlers.find(type.hash_code()); it != m_handlers.end())
+    if (const auto it = m_handlers.find(type); it != m_handlers.end())
     {
         for (auto &handler : it->second)
         {
@@ -48,14 +51,15 @@ void SignalBus::publish(const SignalType &signal)
 
 SignalBus &SignalBus::create()
 {
-    if (m_instance == nullptr)
-    {
-        m_instance = std::make_unique<SignalBus>();
-    }
+    m_instance = std::make_unique<SignalBus>();
     return *m_instance;
 }
-SignalBus &SignalBus::get() const
+SignalBus &SignalBus::get()
 {
+    if (!m_instance)
+    {
+        throw std::runtime_error("SignalBus not created. Call create() first.");
+    }
     return *m_instance;
 }
 

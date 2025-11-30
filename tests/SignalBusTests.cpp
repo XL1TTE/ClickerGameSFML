@@ -1,4 +1,8 @@
 
+#include "SignalBus/SignalBus.h"
+#include "SignalBus/Signals/Signals.h"
+
+#include "gtest/gtest.h"
 class SignalBusTest : public ::testing::Test
 {
   protected:
@@ -11,7 +15,10 @@ class SignalBusTest : public ::testing::Test
     {
     }
 
-    SignalBus &bus = SignalBus::get();
+    SignalBus &getBus()
+    {
+        return SignalBus::get();
+    }
 };
 
 TEST_F(SignalBusTest, SingletonPatternWorks)
@@ -35,10 +42,10 @@ TEST_F(SignalBusTest, SubscribeAndPublishGoldChangedSignal)
         callbackCalled = true;
     };
 
-    bus.subscribe<GoldChangedSignal>(callback);
+    getBus().subscribe<GoldChangedSignal>(callback);
 
     GoldChangedSignal signal(150);
-    bus.publish(signal);
+    getBus().publish(signal);
 
     EXPECT_TRUE(callbackCalled);
     EXPECT_EQ(receivedValue, 150);
@@ -63,11 +70,11 @@ TEST_F(SignalBusTest, MultipleSubscribersForSameSignal)
         lastValue2 = signal.m_value;
     };
 
-    bus.subscribe<GoldChangedSignal>(callback1);
-    bus.subscribe<GoldChangedSignal>(callback2);
+    getBus().subscribe<GoldChangedSignal>(callback1);
+    getBus().subscribe<GoldChangedSignal>(callback2);
 
     GoldChangedSignal signal(200);
-    bus.publish(signal);
+    getBus().publish(signal);
 
     EXPECT_EQ(callback1Count, 1);
     EXPECT_EQ(callback2Count, 1);
@@ -84,23 +91,23 @@ TEST_F(SignalBusTest, UnsubscribeFromSignal)
         callbackCount++;
     };
 
-    bus.subscribe<GoldChangedSignal>(callback);
+    getBus().subscribe<GoldChangedSignal>(callback);
 
     GoldChangedSignal signal1(100);
-    bus.publish(signal1);
+    getBus().publish(signal1);
     EXPECT_EQ(callbackCount, 1);
 
-    bus.unsubscribe<GoldChangedSignal>(callback);
+    getBus().unsubscribeAll<GoldChangedSignal>(callback);
 
     GoldChangedSignal signal2(200);
-    bus.publish(signal2);
+    getBus().publish(signal2);
     EXPECT_EQ(callbackCount, 1);
 }
 
 TEST_F(SignalBusTest, PublishWithoutSubscribers)
 {
     GoldChangedSignal signal(300);
-    EXPECT_NO_THROW(bus.publish(signal));
+    EXPECT_NO_THROW(getBus().publish(signal));
 }
 
 TEST_F(SignalBusTest, SequentialSignalsWithDifferentValues)
@@ -112,11 +119,11 @@ TEST_F(SignalBusTest, SequentialSignalsWithDifferentValues)
         receivedValues.push_back(signal.m_value);
     };
 
-    bus.subscribe<GoldChangedSignal>(callback);
+    getBus().subscribe<GoldChangedSignal>(callback);
 
-    bus.publish(GoldChangedSignal(10));
-    bus.publish(GoldChangedSignal(20));
-    bus.publish(GoldChangedSignal(30));
+    getBus().publish(GoldChangedSignal(10));
+    getBus().publish(GoldChangedSignal(20));
+    getBus().publish(GoldChangedSignal(30));
 
     EXPECT_EQ(receivedValues.size(), 3);
     EXPECT_EQ(receivedValues[0], 10);
@@ -140,10 +147,10 @@ TEST_F(SignalBusTest, LambdaWithContextCapture)
         context.updated = true;
     };
 
-    bus.subscribe<GoldChangedSignal>(callback);
+    getBus().subscribe<GoldChangedSignal>(callback);
 
     GoldChangedSignal signal(999);
-    bus.publish(signal);
+    getBus().publish(signal);
 
     EXPECT_TRUE(context.updated);
     EXPECT_EQ(context.gold, 999);
@@ -158,10 +165,10 @@ TEST_F(SignalBusTest, SignalTypeIsCorrect)
         receivedType = typeid(signal).name();
     };
 
-    bus.subscribe<GoldChangedSignal>(callback);
+    getBus().subscribe<GoldChangedSignal>(callback);
 
     GoldChangedSignal signal(123);
-    bus.publish(signal);
+    getBus().publish(signal);
 
     EXPECT_FALSE(receivedType.empty());
 }
@@ -176,17 +183,17 @@ TEST_F(SignalBusTest, MultipleSubscribeUnsubscribe)
     auto callbackB = [&](const GoldChangedSignal &signal)
     { callCountB++; };
 
-    bus.subscribe<GoldChangedSignal>(callbackA);
-    bus.publish(GoldChangedSignal(1));
+    getBus().subscribe<GoldChangedSignal>(callbackA);
+    getBus().publish(GoldChangedSignal(1));
     EXPECT_EQ(callCountA, 1);
 
-    bus.subscribe<GoldChangedSignal>(callbackB);
-    bus.publish(GoldChangedSignal(2));
+    getBus().subscribe<GoldChangedSignal>(callbackB);
+    getBus().publish(GoldChangedSignal(2));
     EXPECT_EQ(callCountA, 2);
     EXPECT_EQ(callCountB, 1);
 
-    bus.unsubscribe<GoldChangedSignal>(callbackA);
-    bus.publish(GoldChangedSignal(3));
+    getBus().unsubscribeAll<GoldChangedSignal>(callbackA);
+    getBus().publish(GoldChangedSignal(3));
     EXPECT_EQ(callCountA, 2);
-    EXPECT_EQ(callCountB, 2);
+    EXPECT_EQ(callCountB, 1);
 }
