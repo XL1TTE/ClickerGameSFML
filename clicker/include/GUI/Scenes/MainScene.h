@@ -13,8 +13,11 @@ class Text;
 
 class MainScene final : public IGameScene
 {
+
   public:
     explicit MainScene(const std::weak_ptr<sf::RenderTarget> &);
+
+    std::unique_ptr<IGameScene> clone() const override;
 };
 
 #endif // CLICKER_MAINSCENE_H

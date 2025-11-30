@@ -4,6 +4,7 @@
 
 #include "G.h"
 #include <algorithm>
+#include <iostream>
 
 std::uint32_t G::m_gold = 0;
 
@@ -13,6 +14,7 @@ std::uint32_t G::GetGold()
 }
 void G::AddGold(const uint32_t amount)
 {
+    std::cout << "Added gold: " << amount << "\n";
     G::m_gold += amount;
 }
 void G::RemoveGold(const uint32_t amount)

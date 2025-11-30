@@ -2,7 +2,7 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "../../../include/GUI/Controls/GameText.h"
+#include "GUI/Controls/GameText.h"
 
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Text.hpp"
@@ -60,4 +60,8 @@ sf::Vector2<float> GameText::getPosition()
 sf::Transform GameText::getTransform()
 {
     return m_textView->getTransform();
+}
+void GameText::Destroy()
+{
+    GameObject::Destroy();
 }

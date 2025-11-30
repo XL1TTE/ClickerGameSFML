@@ -33,6 +33,8 @@ class GameText : public GameObject
     sf::Vector2<float> getSize() override;
     sf::Vector2<float> getPosition() override;
     sf::Transform      getTransform() override;
+
+    void Destroy() override;
 };
 
 #endif // CLICKER_GAMETEXT_H

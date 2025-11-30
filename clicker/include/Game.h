@@ -31,8 +31,8 @@ class Game final
   private:
     static std::unique_ptr<Game> m_instance;
 
-    std::weak_ptr<IGameScene>  m_currentScene;
-    std::shared_ptr<SignalBus> m_signalBus;
+    std::unique_ptr<IGameScene> m_currentScene;
+    std::shared_ptr<SignalBus>  m_signalBus;
 
   public:
     std::shared_ptr<sf::RenderWindow> m_windowPtr;
@@ -48,7 +48,8 @@ class Game final
     static void                            Update();
     static void                            UpdateScreen() noexcept;
     static std::weak_ptr<sf::RenderWindow> GetWindow();
-    static void                            SetScene(const std::weak_ptr<IGameScene> &scene);
+    static void                            SetScene(std::unique_ptr<IGameScene> scene);
+    static void                            DestroyScene();
     static void                            SetFrameRate(uint8_t limit) noexcept;
     static bool                            IsExist() noexcept;
     static void                            Exit() noexcept;

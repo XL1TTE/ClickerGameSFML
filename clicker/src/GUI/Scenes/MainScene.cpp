@@ -25,10 +25,18 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
         .SetText(std::to_string(G::GetGold()))
         .AlignCenter();
 
-    Game::GetBus()
-        .subscribe<GoldChangedSignal>([goldText](const GoldChangedSignal &signal)
-                                      { goldText->SetText(std::to_string(signal.m_value)); });
+    RegisterEvent(
+        Game::GetBus()
+            .subscribe<GoldChangedSignal>(
+                [goldText](const GoldChangedSignal &signal)
+                {
+                    goldText->SetText(std::to_string(signal.m_value));
+                }));
 
     WithObject(root);
     WithObject(goldText);
+}
+std::unique_ptr<IGameScene> MainScene::clone() const
+{
+    return std::make_unique<MainScene>(*this);
 }

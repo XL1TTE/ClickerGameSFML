@@ -2,13 +2,20 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "../../../include/GUI/Scenes/IGameScene.h"
+#include "GUI/Scenes/IGameScene.h"
 
 #include "Behaviour/GameObject.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 IGameScene::IGameScene(const std::weak_ptr<sf::RenderTarget> &)
 {
+}
+void IGameScene::RegisterEvent(const std::shared_ptr<SignalBus::IConnection> &connection)
+{
+    if (connection != nullptr)
+    {
+        m_Events.push_back(connection);
+    }
 }
 void IGameScene::WithObject(const std::shared_ptr<GameObject> &obj)
 {
@@ -37,4 +44,21 @@ void IGameScene::Draw(const std::weak_ptr<sf::RenderTarget> &drawer) const
     {
         obj->Draw(drawer);
     }
+}
+void IGameScene::Destroy()
+{
+    for (const auto &obj : m_Objects)
+    {
+        obj->Destroy();
+    }
+
+    m_Objects.clear();
+    for (auto &evt : m_Events)
+    {
+        if (evt != nullptr)
+        {
+            evt.reset();
+        }
+    }
+    m_Events.clear();
 }

@@ -29,9 +29,9 @@ void Game::UpdateScreen() noexcept
 
     window->clear();
 
-    if (const auto scene = m_instance->m_currentScene.lock())
+    if (m_instance->m_currentScene != nullptr)
     {
-        scene->Draw(window);
+        m_instance->m_currentScene->Draw(window);
     }
 
     window->display();
@@ -69,16 +69,33 @@ void Game::Update()
 }
 std::weak_ptr<sf::RenderWindow> Game::GetWindow()
 {
+    if (IsExist() == false)
+    {
+        throw std::runtime_error("Create Game via Game::New first.");
+    }
     return m_instance->m_windowPtr;
 }
 
-void Game::SetScene(const std::weak_ptr<IGameScene> &scene)
+void Game::SetScene(std::unique_ptr<IGameScene> scene)
 {
     if (IsExist() == false)
     {
         return;
     }
-    m_instance->m_currentScene = scene;
+
+    DestroyScene();
+    m_instance->m_currentScene = std::move(scene);
+}
+void Game::DestroyScene()
+{
+    if (IsExist() == false)
+    {
+        return;
+    }
+    if (m_instance->m_currentScene != nullptr)
+    {
+        m_instance->m_currentScene->Destroy();
+    }
 }
 void Game::SetFrameRate(const uint8_t limit) noexcept
 {
