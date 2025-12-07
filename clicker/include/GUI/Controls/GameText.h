@@ -14,7 +14,7 @@ class RenderTarget;
 class Color;
 } // namespace sf
 
-class GameText : public GameObject
+class GameText : public xl::GameObject
 {
   public:
     explicit GameText(const sf::Font &);

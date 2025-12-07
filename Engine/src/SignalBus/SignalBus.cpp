@@ -3,6 +3,8 @@
 //
 #include "SignalBus/SignalBus.h"
 
+using namespace xl;
+
 std::unique_ptr<SignalBus> SignalBus::m_instance = nullptr;
 
 SignalBus &SignalBus::create()

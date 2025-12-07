@@ -13,11 +13,11 @@ void Scenes::LoadScenes(const std::weak_ptr<sf::RenderTarget> &renderer)
 {
     m_mainScene = std::make_unique<MainScene>(renderer);
 }
-std::unique_ptr<IGameScene> Scenes::GetMainScene()
+std::unique_ptr<xl::IGameScene> Scenes::GetMainScene()
 {
     return std::move(m_mainScene);
 }
-std::unique_ptr<IGameScene> Scenes::CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
+std::unique_ptr<xl::IGameScene> Scenes::CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
 {
     return std::make_unique<MainScene>(renderer);
 }

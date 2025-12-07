@@ -1,0 +1,18 @@
+//
+// Created by XL1TTE on 07.12.2025.
+//
+
+#ifndef CLICKER_XLENGINE_H
+#define CLICKER_XLENGINE_H
+
+#pragma once
+
+#include "Behaviour/GameObject.h"
+#include "Behaviour/IBehaviourObject.h"
+#include "Controls/Container.h"
+#include "Controls/RootContainer.h"
+#include "Scenes/IGameScene.h"
+#include "SignalBus/SignalBus.h"
+#include "SignalBus/Signals/ISignal.h"
+
+#endif // CLICKER_XLENGINE_H

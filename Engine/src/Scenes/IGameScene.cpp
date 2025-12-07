@@ -2,10 +2,11 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "GUI/Scenes/IGameScene.h"
-
+#include "Scenes/IGameScene.h"
 #include "Behaviour/GameObject.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+
+using namespace xl;
 
 IGameScene::IGameScene(const std::weak_ptr<sf::RenderTarget> &)
 {
@@ -31,11 +32,11 @@ void IGameScene::Awake() const
         obj->Awake();
     }
 }
-void IGameScene::Update(const float &dt) const
+void IGameScene::Update(const int32_t &dt) const
 {
     for (const auto &obj : m_Objects)
     {
-        obj->Update();
+        obj->Update(dt);
     }
 }
 void IGameScene::Draw(const std::weak_ptr<sf::RenderTarget> &drawer) const

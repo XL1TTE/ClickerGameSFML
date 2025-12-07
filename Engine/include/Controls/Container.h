@@ -5,11 +5,13 @@
 #ifndef CLICKER_CONTAINER_H
 #define CLICKER_CONTAINER_H
 #include "Behaviour/GameObject.h"
-
 namespace sf
 {
 class RectangleShape;
 }
+
+namespace xl
+{
 class Container final : public GameObject
 {
   public:
@@ -31,3 +33,4 @@ class Container final : public GameObject
 };
 
 #endif // CLICKER_CONTAINER_H
+}

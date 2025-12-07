@@ -3,14 +3,13 @@
 //
 
 #include "../include/Game.h"
-
-#include "GUI/Scenes/IGameScene.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include <xlEngine>
 
 std::unique_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game() noexcept
-    : m_signalBus(std::make_shared<SignalBus>()),
+    : m_signalBus(std::make_shared<xl::SignalBus>()),
       m_windowPtr(std::make_shared<sf::RenderWindow>(
           sf::VideoMode({640u, 800u}),
           "Clicker",
@@ -50,11 +49,11 @@ Game &Game::New() noexcept
     }
     return *m_instance;
 }
-SignalBus &Game::GetBus() noexcept
+xl::SignalBus &Game::GetBus() noexcept
 {
     if (m_instance->m_signalBus == nullptr)
     {
-        m_instance->m_signalBus = std::make_shared<SignalBus>();
+        m_instance->m_signalBus = std::make_shared<xl::SignalBus>();
         return *m_instance->m_signalBus;
     }
     return *m_instance->m_signalBus;
@@ -66,6 +65,26 @@ void Game::Update()
     {
         return;
     }
+
+    // Delta time calculations -->
+    const auto &game  = m_instance;
+    game->m_deltaTime = game->m_clock.restart().asMilliseconds();
+    // <-- Delta time calculation
+
+    // Awake loop -->
+    if (game->m_currentScene != nullptr && game->m_currentScene->m_IsInitialized == false)
+    {
+        game->m_currentScene->Awake();
+        game->m_currentScene->m_IsInitialized = true;
+    }
+    // <-- Awake loop
+
+    // Game loop -->
+    if (game->m_currentScene != nullptr)
+    {
+        game->m_currentScene->Update(game->m_deltaTime);
+    }
+    // <-- Game loop
 }
 std::weak_ptr<sf::RenderWindow> Game::GetWindow()
 {
@@ -76,7 +95,7 @@ std::weak_ptr<sf::RenderWindow> Game::GetWindow()
     return m_instance->m_windowPtr;
 }
 
-void Game::SetScene(std::unique_ptr<IGameScene> scene)
+void Game::SetScene(std::unique_ptr<xl::IGameScene> scene)
 {
     if (IsExist() == false)
     {
@@ -86,17 +105,21 @@ void Game::SetScene(std::unique_ptr<IGameScene> scene)
     DestroyScene();
     m_instance->m_currentScene = std::move(scene);
 }
+
 void Game::DestroyScene()
 {
     if (IsExist() == false)
     {
         return;
     }
-    if (m_instance->m_currentScene != nullptr)
+
+    if (const auto &game = m_instance; game->m_currentScene != nullptr)
     {
-        m_instance->m_currentScene->Destroy();
+        game->m_currentScene->Destroy();
+        game->m_currentScene->m_IsInitialized = false;
     }
 }
+
 void Game::SetFrameRate(const uint8_t limit) noexcept
 {
     if (IsExist() == false)

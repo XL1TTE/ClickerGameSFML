@@ -6,7 +6,7 @@
 #define CLICKER_GOLDCHANGEDSIGNAL_H
 #include "SignalBus/Signals/ISignal.h"
 
-class GoldChangedSignal : public ISignal
+class GoldChangedSignal : public xl::ISignal
 {
   public:
     explicit GoldChangedSignal(const unsigned int value)

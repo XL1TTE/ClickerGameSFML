@@ -10,22 +10,17 @@
 
 namespace sf
 {
+class Transformable;
 class Transform;
-
+class RenderTarget;
 template <typename T>
 class Vector2;
 } // namespace sf
-namespace sf
+
+namespace xl
 {
-class Transformable;
-}
 
 class IBehaviourObject;
-
-namespace sf
-{
-class RenderTarget;
-}
 
 class GameObject
 {
@@ -40,7 +35,7 @@ class GameObject
 
   public:
     virtual void Awake();
-    virtual void Update();
+    virtual void Update(const int32_t &dt);
     virtual void Destroy();
     virtual void Draw(const std::weak_ptr<sf::RenderTarget> &);
 
@@ -51,4 +46,5 @@ class GameObject
     void SetParent(const std::weak_ptr<GameObject> &parent);
 };
 
+} // namespace xl
 #endif // CLICKER_GAMEOBJECT_H

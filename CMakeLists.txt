@@ -22,7 +22,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
-# Основное приложение
+# Clicker dependencies
 file(GLOB_RECURSE CLICKER_SRC_FILES
         CONFIGURE_DEPENDS
         "clicker/src/*.cpp"
@@ -41,19 +41,17 @@ target_compile_definitions(clicker PUBLIC
 )
 
 target_compile_features(clicker PRIVATE cxx_std_20)
-target_link_libraries(clicker PRIVATE SFML::Graphics SFML::Window SFML::System)
 
-file(GLOB_RECURSE SIGNAL_BUS_SRC_FILES
-        CONFIGURE_DEPENDS
-        "clicker/src/SignalBus/*.cpp"
-)
+# Engine
+add_subdirectory(Engine)
+# Engine
 
-add_library(signal_bus ${SIGNAL_BUS_SRC_FILES})
-target_include_directories(signal_bus PUBLIC
-        "clicker/include"
-        "clicker/src"
-)
-target_compile_features(signal_bus PRIVATE cxx_std_20)
+target_compile_features(xlEngine PRIVATE cxx_std_20)
+
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Engine")
+
+    target_link_libraries(clicker PRIVATE xlEngine)
+endif ()
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 

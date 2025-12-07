@@ -2,9 +2,11 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "GUI/Controls/RootContainer.h"
-
+#include "Controls/RootContainer.h"
 #include "SFML/Graphics/RenderTarget.hpp"
+
+using namespace xl;
+
 RootContainer::RootContainer(const std::weak_ptr<sf::RenderTarget> &renderer)
     : m_root(renderer)
 {

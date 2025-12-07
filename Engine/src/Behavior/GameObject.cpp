@@ -2,10 +2,12 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "../../include/Behaviour/GameObject.h"
-
+#include "Behaviour/GameObject.h"
 #include "SFML/Graphics/Transform.hpp"
 #include "SFML/System/Vector2.hpp"
+
+using namespace xl;
+
 void GameObject::Awake()
 {
     for (auto &child : m_childrens)
@@ -13,11 +15,11 @@ void GameObject::Awake()
         child.lock()->Awake();
     }
 }
-void GameObject::Update()
+void GameObject::Update(const int32_t &dt)
 {
     for (auto &child : m_childrens)
     {
-        child.lock()->Update();
+        child.lock()->Update(dt);
     }
 }
 void GameObject::Destroy()

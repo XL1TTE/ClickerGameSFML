@@ -1,10 +1,12 @@
-#include "Behaviour/GameObject.h"
+
+
 #include "G.h"
 #include "Game.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "Scenes/Scenes.h"
-#include "SignalBus/SignalBus.h"
-#include "SignalBus/Signals/Signals.h"
+#include "Signals/Signals.h"
+
+#include <xlEngine>
 
 int main()
 {
@@ -23,14 +25,6 @@ int main()
         {
             G::AddGold(1);
             Game::GetBus().emit(GoldChangedSignal(G::GetGold()));
-        }
-        if (keyPressed.scancode == sf::Keyboard::Scancode::Escape)
-        {
-            Game::DestroyScene();
-        }
-        if (keyPressed.scancode == sf::Keyboard::Scancode::Enter)
-        {
-            Game::SetScene(Scenes::CreateMainScene(window));
         }
     };
     const auto onExit = [](const sf::Event::Closed &exit)

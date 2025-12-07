@@ -2,11 +2,13 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "GUI/Controls/Container.h"
+#include "Controls/Container.h"
 
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Transform.hpp"
+
+using namespace xl;
 
 Container::Container(const std::weak_ptr<sf::RectangleShape> &container)
     : m_container(container)

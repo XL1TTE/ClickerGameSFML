@@ -4,20 +4,20 @@
 
 #ifndef CLICKER_MAINSCENE_H
 #define CLICKER_MAINSCENE_H
-#include "IGameScene.h"
+#include "Scenes/IGameScene.h"
 
 namespace sf
 {
 class Text;
 } // namespace sf
 
-class MainScene final : public IGameScene
+class MainScene final : public xl::IGameScene
 {
 
   public:
     explicit MainScene(const std::weak_ptr<sf::RenderTarget> &);
 
-    std::unique_ptr<IGameScene> clone() const override;
+    [[nodiscard]] std::unique_ptr<xl::IGameScene> clone() const override;
 };
 
 #endif // CLICKER_MAINSCENE_H

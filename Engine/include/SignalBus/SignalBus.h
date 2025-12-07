@@ -10,6 +10,9 @@
 #include <memory>
 #include <typeindex>
 
+namespace xl
+{
+
 // Define a token type for safe unsubscribing
 using SubscriptionToken = unsigned int;
 
@@ -179,4 +182,5 @@ class SignalBus final
     static SignalBus &get();
 };
 
+} // namespace xl
 #endif // CLICKER_SIGNALBUS_H

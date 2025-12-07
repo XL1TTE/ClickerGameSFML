@@ -6,6 +6,9 @@
 #define CLICKER_ROOTCONTAINER_H
 #include "Behaviour/GameObject.h"
 
+namespace xl
+{
+
 class RootContainer final : public GameObject
 {
   public:
@@ -21,3 +24,4 @@ class RootContainer final : public GameObject
 };
 
 #endif // CLICKER_ROOTCONTAINER_H
+}

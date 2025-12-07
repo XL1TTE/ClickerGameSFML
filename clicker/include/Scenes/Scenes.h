@@ -4,10 +4,12 @@
 
 #ifndef CLICKER_SCENES_H
 #define CLICKER_SCENES_H
-#include "GUI/Scenes/IGameScene.h"
 #include <memory>
-
+namespace xl
+{
 class IGameScene;
+
+}
 namespace sf
 {
 class RenderTarget;
@@ -18,8 +20,8 @@ class Scenes
     static void LoadScenes(const std::weak_ptr<sf::RenderTarget> &);
 
   public:
-    static std::unique_ptr<IGameScene> GetMainScene();
-    static std::unique_ptr<IGameScene> CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer);
+    static std::unique_ptr<xl::IGameScene> GetMainScene();
+    static std::unique_ptr<xl::IGameScene> CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer);
 };
 
 #define MAIN_SCENE_INSTANTIATE Scenes::GetMainScene()

@@ -9,18 +9,22 @@
 #include <memory>
 #include <vector>
 
-class SignalBus;
-class GameObject;
-
 namespace sf
 {
 class RenderTarget;
 }
 
-class IGameScene
+namespace xl
 {
 
+class SignalBus;
+class GameObject;
+
+class IGameScene
+{
   public:
+    bool m_IsInitialized = false;
+
     IGameScene()                       = default;
     IGameScene(const IGameScene &)     = default;
     IGameScene(IGameScene &&) noexcept = default;
@@ -43,11 +47,12 @@ class IGameScene
 
   public:
     void Awake() const;
-    void Update(const float &dt) const;
+    void Update(const int32_t &dt) const;
     void Draw(const std::weak_ptr<sf::RenderTarget> &) const;
     void Destroy();
 
-    virtual std::unique_ptr<IGameScene> clone() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<IGameScene> clone() const = 0;
 };
 
 #endif // CLICKER_IGAMESCENE_H
+}
