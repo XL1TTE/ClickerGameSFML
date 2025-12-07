@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_IPOINTERCLICKHANDLER_H
-#define CLICKER_IPOINTERCLICKHANDLER_H
+#ifndef XLENGINE_IPOINTERCLICKHANDLER_H
+#define XLENGINE_IPOINTERCLICKHANDLER_H
 #include "Interfaces/IHaveCollider.h"
 #include "SFML/Window/Event.hpp"
 
@@ -23,4 +23,4 @@ class IPointerClickHandler : public IHaveCollider
 
 } // namespace xl
 
-#endif // CLICKER_IPOINTERCLICKHANDLER_H
+#endif // XLENGINE_IPOINTERCLICKHANDLER_H

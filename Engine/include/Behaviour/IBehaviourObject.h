@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_IBEHAVIOUROBJECT_H
-#define CLICKER_IBEHAVIOUROBJECT_H
+#ifndef XLENGINE_IBEHAVIOUROBJECT_H
+#define XLENGINE_IBEHAVIOUROBJECT_H
 
 class IBehaviourObject
 {
@@ -16,4 +16,4 @@ class IBehaviourObject
     virtual void Destroy();
 };
 
-#endif // CLICKER_IBEHAVIOUROBJECT_H
+#endif // XLENGINE_IBEHAVIOUROBJECT_H

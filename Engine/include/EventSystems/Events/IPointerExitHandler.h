@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_IPOINTEREXITHANDLER_H
-#define CLICKER_IPOINTEREXITHANDLER_H
+#ifndef XLENGINE_IPOINTEREXITHANDLER_H
+#define XLENGINE_IPOINTEREXITHANDLER_H
 #include "Interfaces/IHaveCollider.h"
 
 struct PointerExitEvent
@@ -20,4 +20,4 @@ class IPointerExitHandler : public IHaveCollider
 };
 } // namespace xl
 
-#endif // CLICKER_IPOINTEREXITHANDLER_H
+#endif // XLENGINE_IPOINTEREXITHANDLER_H

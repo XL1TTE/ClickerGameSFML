@@ -11,15 +11,15 @@ RootContainer::RootContainer(const std::weak_ptr<sf::RenderTarget> &renderer)
     : m_root(renderer)
 {
 }
-sf::Transform RootContainer::getTransform()
+sf::Transform RootContainer::GetTransform() const
 {
     if (m_root.expired())
     {
-        return GameObject::getTransform();
+        return GameObject::GetTransform();
     }
     return m_root.lock()->getView().getTransform();
 }
-sf::Vector2<float> RootContainer::GetSize()
+sf::Vector2<float> RootContainer::GetSize() const
 {
     if (m_root.expired())
     {
@@ -27,7 +27,7 @@ sf::Vector2<float> RootContainer::GetSize()
     }
     return m_root.lock()->getView().getSize();
 }
-sf::Vector2<float> RootContainer::getPosition()
+sf::Vector2<float> RootContainer::GetPosition() const
 {
     return m_root.lock()->getView().getCenter();
 }

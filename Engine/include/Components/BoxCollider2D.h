@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_BOXCOLLIDER2D_H
-#define CLICKER_BOXCOLLIDER2D_H
+#ifndef XLENGINE_BOXCOLLIDER2D_H
+#define XLENGINE_BOXCOLLIDER2D_H
 
 #include "SFML/Graphics/RectangleShape.hpp"
 
@@ -37,4 +37,4 @@ inline bool BoxCollider2D::Contains(const sf::Vector2f point) const
 }
 
 } // namespace xl
-#endif // CLICKER_BOXCOLLIDER2D_H
+#endif // XLENGINE_BOXCOLLIDER2D_H

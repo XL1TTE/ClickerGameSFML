@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_IGAMESCENE_H
-#define CLICKER_IGAMESCENE_H
+#ifndef XLENGINE_IGAMESCENE_H
+#define XLENGINE_IGAMESCENE_H
 #include "Behaviour/GameObject.h"
 #include "SignalBus/SignalBus.h"
 
@@ -75,4 +75,4 @@ class IGameScene
     }
 };
 } // namespace xl
-#endif // CLICKER_IGAMESCENE_H
+#endif // XLENGINE_IGAMESCENE_H

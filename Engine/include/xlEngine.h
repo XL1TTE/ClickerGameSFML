@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_GAME_H
-#define CLICKER_GAME_H
+#ifndef XLENGINE_ENGINE_H
+#define XLENGINE_ENGINE_H
 #include "SFML/System/Clock.hpp"
 #include <memory>
 
@@ -60,4 +60,4 @@ class xlEngine final
     static void                            Exit() noexcept;
 };
 } // namespace xl
-#endif // CLICKER_GAME_H
+#endif // XLENGINE_ENGINE_H

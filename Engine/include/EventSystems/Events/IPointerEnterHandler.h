@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_IPOINTERENTERHANDLER_H
-#define CLICKER_IPOINTERENTERHANDLER_H
+#ifndef XLENGINE_IPOINTERENTERHANDLER_H
+#define XLENGINE_IPOINTERENTERHANDLER_H
 #include "Interfaces/IHaveCollider.h"
 
 struct PointerEnterEvent
@@ -22,4 +22,4 @@ class IPointerEnterHandler : public IHaveCollider
 
 } // namespace xl
 
-#endif // CLICKER_IPOINTERENTERHANDLER_H
+#endif // XLENGINE_IPOINTERENTERHANDLER_H

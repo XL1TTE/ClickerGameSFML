@@ -36,18 +36,19 @@ void GameObject::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
         child.lock()->Draw(drawer);
     }
 }
-sf::Vector2f GameObject::GetSize()
+sf::Vector2f GameObject::GetSize() const
 {
     return {0.f, 0.f};
 }
-sf::Vector2<float> GameObject::getPosition()
+sf::Vector2<float> GameObject::GetPosition() const
 {
     return {0.f, 0.f};
 }
-sf::Transform GameObject::getTransform()
+sf::Transform GameObject::GetTransform() const
 {
     return sf::Transform::Identity;
 }
+
 void GameObject::SetParent(const std::weak_ptr<GameObject> &parent)
 {
     m_parent = parent;

@@ -2,8 +2,8 @@
 // Created by XL1TTE on 30.11.2025.
 //
 
-#ifndef CLICKER_SIGNALBUS_H
-#define CLICKER_SIGNALBUS_H
+#ifndef XLENGINE_SIGNALBUS_H
+#define XLENGINE_SIGNALBUS_H
 #include <atomic>
 #include <functional>
 #include <iostream>
@@ -183,4 +183,4 @@ class SignalBus final
 };
 
 } // namespace xl
-#endif // CLICKER_SIGNALBUS_H
+#endif // XLENGINE_SIGNALBUS_H

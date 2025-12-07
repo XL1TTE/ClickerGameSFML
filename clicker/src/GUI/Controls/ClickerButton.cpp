@@ -9,13 +9,13 @@
 #include "Signals/Signals.h"
 #include "xlEngine.h"
 
-sf::Vector2<float> ClickerButton::GetSize()
+ClickerButton::ClickerButton(std::unique_ptr<sf::Shape> &&mesh)
+    : Button(std::move(mesh))
 {
-    return RectangleButton::GetSize();
 }
 bool ClickerButton::Contains(const sf::Vector2<float> point)
 {
-    return RectangleButton::m_button->getGlobalBounds().contains(point);
+    return Button::m_Mesh->getGlobalBounds().contains(point);
 }
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
@@ -24,4 +24,8 @@ void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 }
 void ClickerButton::OnPointerEnter(PointerEnterEvent event)
 {
+}
+sf::Vector2<float> ClickerButton::GetSize()
+{
+    return m_Mesh->getGlobalBounds().size;
 }

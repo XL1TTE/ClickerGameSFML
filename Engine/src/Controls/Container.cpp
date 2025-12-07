@@ -26,17 +26,17 @@ void Container::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
     drawer.lock()->draw(*m_container.lock());
 }
 
-sf::Transform Container::getTransform()
+sf::Transform Container::GetTransform() const
 {
     return m_container.lock()->getTransform();
 }
-sf::Vector2<float> Container::GetSize()
+sf::Vector2<float> Container::GetSize() const
 {
     return m_container.lock()->getSize();
 }
-sf::Vector2<float> Container::getPosition()
+sf::Vector2<float> Container::GetPosition() const
 {
-    return GameObject::getPosition();
+    return GameObject::GetPosition();
 }
 Container &Container::FullWidth()
 {

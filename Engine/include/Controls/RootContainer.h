@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_ROOTCONTAINER_H
-#define CLICKER_ROOTCONTAINER_H
+#ifndef XLENGINE_ROOTCONTAINER_H
+#define XLENGINE_ROOTCONTAINER_H
 #include "Behaviour/GameObject.h"
 
 namespace xl
@@ -18,9 +18,9 @@ class RootContainer final : public GameObject
     std::weak_ptr<sf::RenderTarget> m_root;
 
   public:
-    sf::Transform      getTransform() override;
-    sf::Vector2<float> GetSize() override;
-    sf::Vector2<float> getPosition() override;
+    sf::Transform      GetTransform() const override;
+    sf::Vector2<float> GetSize() const override;
+    sf::Vector2<float> GetPosition() const override;
 };
 } // namespace xl
-#endif // CLICKER_ROOTCONTAINER_H
+#endif // XLENGINE_ROOTCONTAINER_H

@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_GAMEOBJECT_H
-#define CLICKER_GAMEOBJECT_H
+#ifndef XLENGINE_GAMEOBJECT_H
+#define XLENGINE_GAMEOBJECT_H
 
 #include <memory>
 #include <vector>
@@ -25,7 +25,6 @@ class IBehaviourObject;
 class GameObject
 {
   public:
-    GameObject()          = default;
     virtual ~GameObject() = default;
 
   protected:
@@ -39,12 +38,12 @@ class GameObject
     virtual void Destroy();
     virtual void Draw(const std::weak_ptr<sf::RenderTarget> &);
 
-    virtual class sf::Vector2<float> GetSize();
-    virtual sf::Vector2<float>       getPosition();
-    virtual sf::Transform            getTransform();
+    [[nodiscard]] virtual sf::Vector2<float> GetSize() const;
+    [[nodiscard]] virtual sf::Vector2<float> GetPosition() const;
+    [[nodiscard]] virtual sf::Transform      GetTransform() const;
 
     void SetParent(const std::weak_ptr<GameObject> &parent);
 };
 
 } // namespace xl
-#endif // CLICKER_GAMEOBJECT_H
+#endif // XLENGINE_GAMEOBJECT_H

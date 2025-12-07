@@ -1,10 +1,11 @@
 #include "GUI/Scenes/MainScene.h"
 
+#include "Controls/Button.h"
+#include "Controls/LayoutObject.h"
 #include "Controls/RootContainer.h"
+#include "Controls/TextMesh.h"
 #include "G.h"
 #include "GUI/Controls/ClickerButton.h"
-#include "GUI/Controls/GameText.h"
-#include "GUI/Controls/RectangleButton.h"
 #include "GUI/Fonts.h"
 #include "SFML/Graphics.hpp"
 #include "Signals/Signals.h"
@@ -20,28 +21,34 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
 {
     const auto root = std::make_shared<xl::RootContainer>(renderer);
 
-    const auto clickerButton = std::make_shared<ClickerButton>();
-    clickerButton->SetParent(root);
-    clickerButton->AlignCenter();
+    std::unique_ptr<sf::RectangleShape> button_rect   = std::make_unique<sf::RectangleShape>(sf::Vector2f(200.f, 200.f));
+    const auto                          clickerButton = std::make_shared<ClickerButton>(std::move(button_rect));
 
-    auto goldText = std::make_unique<GameText>(Fonts::FONT_DEFAULT);
-    goldText->SetParent(clickerButton);
+    clickerButton->SetParent(root);
+    clickerButton->HorizontalCenter();
+    clickerButton->VerticalBottom();
+
+    auto goldText = std::make_shared<xl::TextMesh>(Fonts::FONT_DEFAULT);
+    goldText->SetParent(root);
     goldText->SetColor(sf::Color::Yellow)
         .SetFontSize(64)
-        .SetText(std::to_string(G::GetGold()))
-        .AlignCenter();
+        .SetText(std::to_string(G::GetGold()));
 
-    clickerButton->SetLabel(goldText);
+    goldText->HorizontalCenter();
+    goldText->VerticalTop();
+
+    clickerButton->SetLabel(clickerButton, "Click", Fonts::FONT_DEFAULT);
 
     RegisterEvent(
         xl::xlEngine::GetBus()
             .subscribe<GoldChangedSignal>(
-                [clickerButton](const GoldChangedSignal &signal)
+                [goldText](const GoldChangedSignal &signal)
                 {
-                    clickerButton->ChangeText(std::to_string(signal.m_value));
+                    goldText->SetText(std::to_string(signal.m_value));
                 }));
 
     WithObject(root);
+    WithObject(goldText);
     WithObject(clickerButton);
 }
 std::unique_ptr<xl::IGameScene> MainScene::clone() const

@@ -2,8 +2,8 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#ifndef CLICKER_CONTAINER_H
-#define CLICKER_CONTAINER_H
+#ifndef XLENGINE_CONTAINER_H
+#define XLENGINE_CONTAINER_H
 #include "Behaviour/GameObject.h"
 namespace sf
 {
@@ -26,11 +26,11 @@ class Container final : public GameObject
     void FillEmptyWidth() const;
 
   public:
-    sf::Transform      getTransform() override;
-    sf::Vector2<float> GetSize() override;
-    sf::Vector2<float> getPosition() override;
+    sf::Transform      GetTransform() const override;
+    sf::Vector2<float> GetSize() const override;
+    sf::Vector2<float> GetPosition() const override;
     Container         &FullWidth();
 };
 
-#endif // CLICKER_CONTAINER_H
+#endif // XLENGINE_CONTAINER_H
 }

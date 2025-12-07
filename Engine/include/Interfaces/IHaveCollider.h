@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_IHAVECOLLIDER_H
-#define CLICKER_IHAVECOLLIDER_H
+#ifndef XLENGINE_IHAVECOLLIDER_H
+#define XLENGINE_IHAVECOLLIDER_H
 #include "Components/BoxCollider2D.h"
 
 namespace sf
@@ -25,4 +25,4 @@ class IHaveCollider
 };
 } // namespace xl
 
-#endif // CLICKER_IHAVECOLLIDER_H
+#endif // XLENGINE_IHAVECOLLIDER_H

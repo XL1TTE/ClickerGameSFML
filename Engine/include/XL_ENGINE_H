@@ -2,8 +2,8 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#ifndef CLICKER_XLENGINE_H
-#define CLICKER_XLENGINE_H
+#ifndef XLENGINE_H
+#define XLENGINE_H
 
 #pragma once
 
@@ -16,4 +16,4 @@
 #include "SignalBus/Signals/ISignal.h"
 #include "xlengine.h"
 
-#endif // CLICKER_XLENGINE_H
+#endif // XLENGINE_H
