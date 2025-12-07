@@ -4,8 +4,11 @@
 
 #include "GUI/Controls/GameText.h"
 
+#include "EventSystems/Events/IPointerEnterHandler.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Text.hpp"
+
+#include <iostream>
 
 GameText::GameText(const sf::Font &font)
     : m_textView(std::make_unique<sf::Text>(font))
@@ -45,13 +48,17 @@ GameText &GameText::AlignCenter()
     m_textView->setOrigin({textBounds.position.x + textBounds.size.x / 2.0f,
                            textBounds.position.y + textBounds.size.y / 2.0f});
 
-    const auto [width, height] = m_parent.lock()->getSize();
+    const auto [width, height] = m_parent.lock()->GetSize();
     m_textView->setPosition({width / 2.0f, height / 2.0f});
     return *this;
 }
-sf::Vector2<float> GameText::getSize()
+sf::Vector2<float> GameText::GetSize()
 {
     return m_textView->getGlobalBounds().size;
+}
+bool GameText::Contains(const sf::Vector2<float> point)
+{
+    return m_textView->getGlobalBounds().contains(point);
 }
 sf::Vector2<float> GameText::getPosition()
 {
@@ -61,6 +68,15 @@ sf::Transform GameText::getTransform()
 {
     return m_textView->getTransform();
 }
+void GameText::OnPointerEnter(PointerEnterEvent event)
+{
+    std::cout << "Pointer enter event" << "\n";
+}
+void GameText::OnPointerExit(PointerExitEvent event)
+{
+    std::cout << "Pointer exit event" << "\n";
+}
+
 void GameText::Destroy()
 {
     GameObject::Destroy();

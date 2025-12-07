@@ -1,10 +1,10 @@
 #include "GUI/Scenes/MainScene.h"
 
+#include "../../../../Engine/include/xlEngine.h"
 #include "Controls/RootContainer.h"
 #include "G.h"
 #include "GUI/Controls/GameText.h"
 #include "GUI/Fonts.h"
-#include "Game.h"
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "Signals/Signals.h"
@@ -26,7 +26,7 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
         .AlignCenter();
 
     RegisterEvent(
-        Game::GetBus()
+        xl::xlEngine::GetBus()
             .subscribe<GoldChangedSignal>(
                 [goldText](const GoldChangedSignal &signal)
                 {

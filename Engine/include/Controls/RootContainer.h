@@ -19,7 +19,7 @@ class RootContainer final : public GameObject
 
   public:
     sf::Transform      getTransform() override;
-    sf::Vector2<float> getSize() override;
+    sf::Vector2<float> GetSize() override;
     sf::Vector2<float> getPosition() override;
 };
 

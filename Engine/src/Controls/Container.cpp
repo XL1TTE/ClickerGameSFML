@@ -30,7 +30,7 @@ sf::Transform Container::getTransform()
 {
     return m_container.lock()->getTransform();
 }
-sf::Vector2<float> Container::getSize()
+sf::Vector2<float> Container::GetSize()
 {
     return m_container.lock()->getSize();
 }
@@ -45,5 +45,5 @@ Container &Container::FullWidth()
 }
 void Container::FillEmptyWidth() const
 {
-    m_container.lock()->setSize(m_parent.lock()->getSize());
+    m_container.lock()->setSize(m_parent.lock()->GetSize());
 }

@@ -3,7 +3,6 @@
 //
 
 #include "Scenes/IGameScene.h"
-#include "Behaviour/GameObject.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 using namespace xl;

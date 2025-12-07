@@ -39,7 +39,7 @@ class GameObject
     virtual void Destroy();
     virtual void Draw(const std::weak_ptr<sf::RenderTarget> &);
 
-    virtual class sf::Vector2<float> getSize();
+    virtual class sf::Vector2<float> GetSize();
     virtual sf::Vector2<float>       getPosition();
     virtual sf::Transform            getTransform();
 

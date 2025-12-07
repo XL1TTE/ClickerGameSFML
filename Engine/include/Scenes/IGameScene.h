@@ -4,6 +4,7 @@
 
 #ifndef CLICKER_IGAMESCENE_H
 #define CLICKER_IGAMESCENE_H
+#include "Behaviour/GameObject.h"
 #include "SignalBus/SignalBus.h"
 
 #include <memory>
@@ -52,6 +53,26 @@ class IGameScene
     void Destroy();
 
     [[nodiscard]] virtual std::unique_ptr<IGameScene> clone() const = 0;
+
+    template <typename T>
+    [[nodiscard]] std::vector<std::weak_ptr<T>> GetAllObjectsByType() const
+    {
+        std::vector<std::weak_ptr<T>> t_result = std::vector<std::weak_ptr<T>>();
+        t_result.reserve(8);
+
+        for (const auto &objPtr : m_Objects)
+        {
+            std::shared_ptr<T> sharedCastedPtr = std::dynamic_pointer_cast<T>(objPtr);
+
+            if (sharedCastedPtr != nullptr)
+            {
+                std::weak_ptr<T> weakPtr(sharedCastedPtr);
+
+                t_result.push_back(weakPtr);
+            }
+        }
+        return t_result;
+    }
 };
 
 #endif // CLICKER_IGAMESCENE_H

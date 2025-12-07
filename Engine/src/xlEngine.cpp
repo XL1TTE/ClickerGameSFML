@@ -2,14 +2,18 @@
 // Created by XL1TTE on 29.11.2025.
 //
 
-#include "../include/Game.h"
+#include "../include/xlEngine.h"
+
+#include "EventSystems/MouseEventsSystem.h"
 #include "SFML/Graphics/RenderWindow.hpp"
-#include <xlEngine>
+#include <XL_ENGINE_H>
 
-std::unique_ptr<Game> Game::m_instance = nullptr;
+using namespace xl;
 
-Game::Game() noexcept
-    : m_signalBus(std::make_shared<xl::SignalBus>()),
+std::unique_ptr<xlEngine> xlEngine::m_instance = nullptr;
+
+xlEngine::xlEngine() noexcept
+    : m_signalBus(std::make_shared<SignalBus>()),
       m_windowPtr(std::make_shared<sf::RenderWindow>(
           sf::VideoMode({640u, 800u}),
           "Clicker",
@@ -17,7 +21,7 @@ Game::Game() noexcept
 {
 }
 
-void Game::UpdateScreen() noexcept
+void xlEngine::UpdateScreen() noexcept
 {
     if (!IsExist())
     {
@@ -36,20 +40,20 @@ void Game::UpdateScreen() noexcept
     window->display();
 }
 
-bool Game::IsExist() noexcept
+bool xlEngine::IsExist() noexcept
 {
     return m_instance != nullptr;
 }
 
-Game &Game::New() noexcept
+xlEngine &xlEngine::New() noexcept
 {
     if (IsExist() == false)
     {
-        m_instance = std::make_unique<Game>();
+        m_instance = std::make_unique<xlEngine>();
     }
     return *m_instance;
 }
-xl::SignalBus &Game::GetBus() noexcept
+xl::SignalBus &xlEngine::GetBus() noexcept
 {
     if (m_instance->m_signalBus == nullptr)
     {
@@ -59,7 +63,7 @@ xl::SignalBus &Game::GetBus() noexcept
     return *m_instance->m_signalBus;
 }
 
-void Game::Update()
+void xlEngine::Update()
 {
     if (IsExist() == false)
     {
@@ -83,10 +87,21 @@ void Game::Update()
     if (game->m_currentScene != nullptr)
     {
         game->m_currentScene->Update(game->m_deltaTime);
+        EventsUpdate();
     }
     // <-- Game loop
 }
-std::weak_ptr<sf::RenderWindow> Game::GetWindow()
+void xlEngine::EventsUpdate() noexcept
+{
+    if (IsExist() == false)
+    {
+        return;
+    }
+
+    MouseEventsSystem::ProcessEvents(*m_instance->m_windowPtr, *m_instance->m_currentScene);
+}
+
+std::weak_ptr<sf::RenderWindow> xlEngine::GetWindow()
 {
     if (IsExist() == false)
     {
@@ -95,7 +110,7 @@ std::weak_ptr<sf::RenderWindow> Game::GetWindow()
     return m_instance->m_windowPtr;
 }
 
-void Game::SetScene(std::unique_ptr<xl::IGameScene> scene)
+void xlEngine::SetScene(std::unique_ptr<IGameScene> scene)
 {
     if (IsExist() == false)
     {
@@ -106,7 +121,7 @@ void Game::SetScene(std::unique_ptr<xl::IGameScene> scene)
     m_instance->m_currentScene = std::move(scene);
 }
 
-void Game::DestroyScene()
+void xlEngine::DestroyScene()
 {
     if (IsExist() == false)
     {
@@ -120,7 +135,7 @@ void Game::DestroyScene()
     }
 }
 
-void Game::SetFrameRate(const uint8_t limit) noexcept
+void xlEngine::SetFrameRate(const uint8_t limit) noexcept
 {
     if (IsExist() == false)
     {
@@ -128,7 +143,7 @@ void Game::SetFrameRate(const uint8_t limit) noexcept
     }
     m_instance->m_windowPtr->setFramerateLimit(limit);
 }
-void Game::Exit() noexcept
+void xlEngine::Exit() noexcept
 {
     m_instance = nullptr;
 }

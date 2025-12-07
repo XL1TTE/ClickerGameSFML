@@ -36,7 +36,7 @@ void GameObject::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
         child.lock()->Draw(drawer);
     }
 }
-sf::Vector2f GameObject::getSize()
+sf::Vector2f GameObject::GetSize()
 {
     return {0.f, 0.f};
 }

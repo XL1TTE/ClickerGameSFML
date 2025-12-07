@@ -19,11 +19,11 @@ sf::Transform RootContainer::getTransform()
     }
     return m_root.lock()->getView().getTransform();
 }
-sf::Vector2<float> RootContainer::getSize()
+sf::Vector2<float> RootContainer::GetSize()
 {
     if (m_root.expired())
     {
-        return GameObject::getSize();
+        return GameObject::GetSize();
     }
     return m_root.lock()->getView().getSize();
 }
