@@ -15,6 +15,7 @@ namespace xl
 class IPointerEnterHandler : public IHaveCollider
 {
   public:
+    IPointerEnterHandler()                               = default;
     ~IPointerEnterHandler() override                     = default;
     virtual void OnPointerEnter(PointerEnterEvent event) = 0;
 };

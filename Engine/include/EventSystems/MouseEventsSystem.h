@@ -4,17 +4,20 @@
 
 #ifndef CLICKER_MOUSEEVENTSSYSTEM_H
 #define CLICKER_MOUSEEVENTSSYSTEM_H
+
+#include "SFML/Window/Event.hpp"
+
 #include <memory>
-namespace xl
-{
-class IPointerEnterHandler;
-}
+
 namespace sf
 {
 class WindowBase;
 }
+
 namespace xl
 {
+
+class IPointerEnterHandler;
 class BoxCollider2D;
 class xlEngine;
 class IGameScene;
@@ -26,7 +29,8 @@ class MouseEventsSystem final
   protected:
     static std::weak_ptr<IPointerEnterHandler> m_underCursor;
 
-    static void ProcessEvents(const sf::WindowBase &window, const IGameScene &scene);
+    static void ProcessPointerEvents(const sf::WindowBase &window, const IGameScene &scene);
+    static void ProcessClickEvent(const sf::Event::MouseButtonPressed &, const sf::WindowBase &window, const IGameScene &scene);
 };
 } // namespace xl
 #endif // CLICKER_MOUSEEVENTSSYSTEM_H

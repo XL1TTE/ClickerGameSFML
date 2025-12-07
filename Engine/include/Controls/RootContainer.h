@@ -22,6 +22,5 @@ class RootContainer final : public GameObject
     sf::Vector2<float> GetSize() override;
     sf::Vector2<float> getPosition() override;
 };
-
+} // namespace xl
 #endif // CLICKER_ROOTCONTAINER_H
-}

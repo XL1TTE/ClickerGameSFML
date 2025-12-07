@@ -18,6 +18,7 @@ namespace xl
 class IHaveCollider
 {
   public:
+    IHaveCollider()                                               = default;
     virtual ~IHaveCollider()                                      = default;
     virtual sf::Vector2<float> GetSize()                          = 0;
     virtual bool               Contains(sf::Vector2<float> point) = 0;

@@ -74,6 +74,5 @@ class IGameScene
         return t_result;
     }
 };
-
+} // namespace xl
 #endif // CLICKER_IGAMESCENE_H
-}

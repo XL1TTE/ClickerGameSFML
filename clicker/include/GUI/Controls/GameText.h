@@ -5,8 +5,6 @@
 #ifndef CLICKER_GAMETEXT_H
 #define CLICKER_GAMETEXT_H
 #include "Behaviour/GameObject.h"
-#include "EventSystems/Events/IPointerEnterHandler.h"
-#include "EventSystems/Events/IPointerExitHandler.h"
 
 namespace sf
 {
@@ -16,15 +14,16 @@ class RenderTarget;
 class Color;
 } // namespace sf
 
-class GameText final : public xl::GameObject, public xl::IPointerEnterHandler, public xl::IPointerExitHandler
+class GameText final : public xl::GameObject
 {
   public:
     explicit GameText(const sf::Font &);
+    ~GameText() override = default;
 
   protected:
     std::unique_ptr<sf::Text> m_textView;
 
-  protected:
+  public:
     void Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 
   public:
@@ -33,12 +32,8 @@ class GameText final : public xl::GameObject, public xl::IPointerEnterHandler, p
     GameText          &SetFontSize(unsigned int size);
     GameText          &AlignCenter();
     sf::Vector2<float> GetSize() override;
-    bool               Contains(sf::Vector2<float> point) override;
     sf::Vector2<float> getPosition() override;
     sf::Transform      getTransform() override;
-
-    void OnPointerEnter(PointerEnterEvent event) override;
-    void OnPointerExit(PointerExitEvent event) override;
 
     void Destroy() override;
 };

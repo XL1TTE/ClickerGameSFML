@@ -4,6 +4,7 @@
 
 #include "../include/xlEngine.h"
 
+#include "../../out/Release/_deps/sfml-src/extlibs/headers/vulkan/vulkan_core.h"
 #include "EventSystems/MouseEventsSystem.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include <XL_ENGINE_H>
@@ -97,8 +98,30 @@ void xlEngine::EventsUpdate() noexcept
     {
         return;
     }
+    const auto &window = m_instance->m_windowPtr;
 
-    MouseEventsSystem::ProcessEvents(*m_instance->m_windowPtr, *m_instance->m_currentScene);
+    if (window != nullptr)
+    {
+        while (auto event = window->pollEvent())
+        {
+            if (event.has_value() == false)
+            {
+                continue;
+            }
+            if (auto evt = event.value().getIf<sf::Event::Closed>())
+            {
+                xlEngine::Exit();
+            }
+            if (auto evt = event.value().getIf<sf::Event::MouseMoved>())
+            {
+                MouseEventsSystem::ProcessPointerEvents(*m_instance->m_windowPtr, *m_instance->m_currentScene);
+            }
+            if (const auto evt = event.value().getIf<sf::Event::MouseButtonPressed>())
+            {
+                MouseEventsSystem::ProcessClickEvent(*evt, *m_instance->m_windowPtr, *m_instance->m_currentScene);
+            }
+        }
+    }
 }
 
 std::weak_ptr<sf::RenderWindow> xlEngine::GetWindow()

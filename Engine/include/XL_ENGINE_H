@@ -14,5 +14,6 @@
 #include "Scenes/IGameScene.h"
 #include "SignalBus/SignalBus.h"
 #include "SignalBus/Signals/ISignal.h"
+#include "xlengine.h"
 
 #endif // CLICKER_XLENGINE_H

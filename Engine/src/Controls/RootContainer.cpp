@@ -29,9 +29,5 @@ sf::Vector2<float> RootContainer::GetSize()
 }
 sf::Vector2<float> RootContainer::getPosition()
 {
-    if (m_root.expired())
-    {
-        return GameObject::getPosition();
-    }
     return m_root.lock()->getView().getCenter();
 }

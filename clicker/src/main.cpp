@@ -21,25 +21,10 @@ int main()
 
     xlEngine::SetScene(Scenes::CreateMainScene(window));
 
-    const auto onKeyPressed = [&](const sf::Event::KeyPressed &keyPressed)
-    {
-        if (keyPressed.scancode == sf::Keyboard::Scancode::Space)
-        {
-            G::AddGold(1);
-            xlEngine::GetBus().emit(GoldChangedSignal(G::GetGold()));
-        }
-    };
-    const auto onExit = [](const sf::Event::Closed &exit)
-    {
-        xlEngine::Exit();
-    };
-
     while (xlEngine::IsExist())
     {
         xlEngine::Update();
 
         xlEngine::UpdateScreen();
-
-        window->handleEvents(onKeyPressed, onExit);
     }
 }

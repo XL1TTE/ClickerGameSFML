@@ -3,14 +3,16 @@
 //
 
 #include "EventSystems/MouseEventsSystem.h"
+
+#include "EventSystems/Events/IPointerClickHandler.h"
 #include "EventSystems/Events/IPointerEnterHandler.h"
 #include "EventSystems/Events/IPointerExitHandler.h"
-#include "SFML/Window/Mouse.hpp"
+
 #include "Scenes/IGameScene.h"
 
 std::weak_ptr<xl::IPointerEnterHandler> xl::MouseEventsSystem::m_underCursor;
 
-void xl::MouseEventsSystem::ProcessEvents(const sf::WindowBase &window, const IGameScene &scene)
+void xl::MouseEventsSystem::ProcessPointerEvents(const sf::WindowBase &window, const IGameScene &scene)
 {
     const auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
 
@@ -47,4 +49,14 @@ void xl::MouseEventsSystem::ProcessEvents(const sf::WindowBase &window, const IG
     }
 
     m_underCursor = t_underCursor;
+}
+void xl::MouseEventsSystem::ProcessClickEvent(const sf::Event::MouseButtonPressed &evt, const sf::WindowBase &window, const IGameScene &scene)
+{
+    const std::shared_ptr<IPointerClickHandler> t_clicked =
+        std::dynamic_pointer_cast<IPointerClickHandler>(m_underCursor.lock());
+
+    if (t_clicked != nullptr)
+    {
+        t_clicked->OnPointerClick(evt);
+    }
 }
