@@ -9,13 +9,13 @@
 #include "Signals/Signals.h"
 #include "xlEngine.h"
 
-ClickerButton::ClickerButton(std::unique_ptr<sf::Shape> &&mesh)
-    : Button(std::move(mesh))
+ClickerButton::ClickerButton(const sf::RectangleShape &mesh)
+    : RectangleButton(mesh)
 {
 }
 bool ClickerButton::Contains(const sf::Vector2<float> point)
 {
-    return Button::m_Mesh->getGlobalBounds().contains(point);
+    return RectangleButton::m_Mesh->getGlobalBounds().contains(point);
 }
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {

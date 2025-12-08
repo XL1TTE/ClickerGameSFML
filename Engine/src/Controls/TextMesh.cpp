@@ -12,7 +12,7 @@
 using namespace xl;
 
 TextMesh::TextMesh(const sf::Font &font)
-    : LayoutObject(std::make_unique<sf::Text>(font))
+    : LayoutObject(font)
 {
 }
 void TextMesh::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)

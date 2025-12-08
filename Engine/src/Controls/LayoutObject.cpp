@@ -4,7 +4,8 @@
 
 #include "Controls/LayoutObject.h"
 
-#include "SFML/Graphics/Shape.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
 
 #include <memory>
@@ -12,15 +13,16 @@
 namespace xl
 {
 template <typename T>
-LayoutObject<T>::LayoutObject(std::unique_ptr<T> &&mesh)
-    : m_Mesh(std::move(mesh))
+LayoutObject<T>::LayoutObject(const T &mesh)
+    : m_Mesh(std::make_unique<T>(mesh)), m_margin(0)
 {
 }
 
 template <typename T>
 void LayoutObject<T>::ApplyAllStyles() const
 {
-    for (const auto &style : m_Styles)
+    // Applying layouts  -->
+    for (const auto &style : m_Layouts)
     {
         switch (style)
         {
@@ -44,6 +46,14 @@ void LayoutObject<T>::ApplyAllStyles() const
             break;
         }
     }
+    // <-- Applying layouts
+}
+template <typename T>
+sf::Vector2f LayoutObject<T>::AddMargin(const sf::Vector2f &size) const
+{
+    auto [x, y]       = size;
+    auto [t, b, l, r] = m_margin;
+    return {x - r - l, y - t - b};
 }
 template <typename T>
 void LayoutObject<T>::PivotToCenter() const
@@ -58,7 +68,7 @@ void LayoutObject<T>::AlignCenter() const
     PivotToCenter();
     if (const auto parent = m_parent.lock())
     {
-        auto [x, y] = parent->GetPosition();
+        auto [x, y] = AddMargin(GetPosition());
         m_Mesh->setPosition({x, y});
     }
 }
@@ -71,7 +81,7 @@ void LayoutObject<T>::VerticalBottom() const
         auto [x, y]             = GetPosition();
         auto [w, h]             = GetSize();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [parentW, parentH] = parent->GetSize();
+        auto [parentW, parentH] = AddMargin(parent->GetSize());
 
         m_Mesh->setPosition(
             {x, parentY + (parentH / 2) - (h / 2)});
@@ -86,7 +96,7 @@ void LayoutObject<T>::VerticalTop() const
         auto [x, y]             = GetPosition();
         auto [w, h]             = GetSize();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [parentW, parentH] = parent->GetSize();
+        auto [parentW, parentH] = AddMargin(parent->GetSize());
 
         m_Mesh->setPosition(
             {x, parentY - (parentH / 2) + h / 2});
@@ -100,10 +110,11 @@ void LayoutObject<T>::HorizontalLeft() const
     {
         auto [x, y]             = GetPosition();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [w, h]             = parent->GetSize();
+        auto [parentW, parentH] = AddMargin(parent->GetSize());
+        auto [w, h]             = GetSize();
 
         m_Mesh->setPosition(
-            {parentX + w / 2, y});
+            {parentX - (parentW / 2) + w / 2, y});
     }
 }
 template <typename T>
@@ -114,10 +125,11 @@ void LayoutObject<T>::HorizontalRight() const
     {
         auto [x, y]             = GetPosition();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [w, h]             = parent->GetSize();
+        auto [parentW, parentH] = AddMargin(parent->GetSize());
+        auto [w, h]             = GetSize();
 
         m_Mesh->setPosition(
-            {parentX - w / 2, y});
+            {parentX + (parentW / 2) - w / 2, y});
     }
 }
 template <typename T>
@@ -127,7 +139,7 @@ void LayoutObject<T>::HorizontalCenter() const
     if (const auto parent = m_parent.lock())
     {
         auto [x, y]             = GetPosition();
-        auto [parentX, parentY] = parent->GetPosition();
+        auto [parentX, parentY] = AddMargin(parent->GetPosition());
         m_Mesh->setPosition(
             {parentX, y});
     }
@@ -139,16 +151,21 @@ void LayoutObject<T>::VerticalCenter() const
     if (const auto parent = m_parent.lock())
     {
         auto [x, y]             = GetPosition();
-        auto [parentX, parentY] = parent->GetPosition();
+        auto [parentX, parentY] = AddMargin(parent->GetPosition());
 
         m_Mesh->setPosition(
             {x, parentY});
     }
 }
 template <typename T>
+void LayoutObject<T>::Margin(const xl::Margin &margin)
+{
+    m_margin = margin;
+}
+template <typename T>
 void LayoutObject<T>::DefineLayout(std::vector<Layout> &&styles)
 {
-    m_Styles = std::move(styles);
+    m_Layouts = std::move(styles);
 }
 template <typename T>
 void LayoutObject<T>::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
@@ -157,7 +174,8 @@ void LayoutObject<T>::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
     GameObject::Draw(weak_ptr);
 }
 
-template class LayoutObject<sf::Shape>;
+template class LayoutObject<sf::RectangleShape>;
+template class LayoutObject<sf::Sprite>;
 template class LayoutObject<sf::Text>;
 
 } // namespace xl

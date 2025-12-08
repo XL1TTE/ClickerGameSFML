@@ -2,24 +2,25 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#include "Controls/Button.h"
+#include "Controls/RectangleButton.h"
 
 #include "Controls/TextMesh.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
+#include "SFML/Graphics/Shape.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/System/Vector2.hpp"
 
 using namespace xl;
 
-Button::Button(std::unique_ptr<sf::Shape> &&mesh)
-    : LayoutObject(std::move(mesh))
+RectangleButton::RectangleButton(const sf::RectangleShape &mesh)
+    : LayoutObject(mesh)
 {
     m_Mesh->setFillColor(sf::Color::Blue);
 }
-Button::~Button() = default;
+RectangleButton::~RectangleButton() = default;
 
-void Button::SetLabel(const std::string &&label, const sf::Font &font)
+void RectangleButton::SetLabel(const std::string &&label, const sf::Font &font)
 {
     m_label = std::make_unique<xl::TextMesh>(font);
     m_label->SetText(label);
@@ -31,28 +32,28 @@ void Button::SetLabel(const std::string &&label, const sf::Font &font)
         Layout::VerticalCenter,
     });
 }
-void Button::ChangeText(const std::string &text) const
+void RectangleButton::ChangeText(const std::string &text) const
 {
     if (m_label != nullptr)
     {
         m_label->SetText(text);
     }
 }
-void Button::SetColor(const sf::Color &color) const
+void RectangleButton::SetColor(const sf::Color &color) const
 {
     m_Mesh->setFillColor(color);
 }
 
-sf::Vector2<float> Button::GetPosition() const
+sf::Vector2<float> RectangleButton::GetPosition() const
 {
     return m_Mesh->getPosition();
 }
-sf::Vector2<float> Button::GetSize() const
+sf::Vector2<float> RectangleButton::GetSize() const
 {
     return m_Mesh->getLocalBounds().size;
 }
 
-void Button::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
+void RectangleButton::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
     LayoutObject::Draw(weak_ptr);
     if (const auto renderer = weak_ptr.lock())

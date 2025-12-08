@@ -1,7 +1,7 @@
 #include "GUI/Scenes/MainScene.h"
 
-#include "Controls/Button.h"
 #include "Controls/LayoutObject.h"
+#include "Controls/RectangleButton.h"
 #include "Controls/RootContainer.h"
 #include "Controls/TextMesh.h"
 #include "G.h"
@@ -21,14 +21,14 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
 {
     const auto root = std::make_shared<xl::RootContainer>(renderer);
 
-    std::unique_ptr<sf::RectangleShape> button_rect   = std::make_unique<sf::RectangleShape>(sf::Vector2f(200.f, 200.f));
-    const auto                          clickerButton = std::make_shared<ClickerButton>(std::move(button_rect));
+    const auto clickerButton = std::make_shared<ClickerButton>(sf::RectangleShape({200.f, 100.f}));
 
     clickerButton->SetLabel("Click", Fonts::FONT_DEFAULT);
 
     clickerButton->SetParent(root);
     clickerButton->DefineLayout(
         {xl::Layout::HorizontalCenter, xl::Layout::VerticalBottom});
+    clickerButton->Margin({32, 0});
 
     auto goldText = std::make_shared<xl::TextMesh>(Fonts::FONT_DEFAULT);
     goldText->SetParent(root);
@@ -36,8 +36,9 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
         .SetFontSize(64)
         .SetText(std::to_string(G::GetGold()));
 
+    goldText->Margin({32, 32});
     goldText->DefineLayout(
-        {xl::Layout::HorizontalCenter, xl::Layout::VerticalTop});
+        {xl::Layout::HorizontalRight, xl::Layout::VerticalTop});
 
     RegisterEvent(xl::xlEngine::GetBus().subscribe<GoldChangedSignal>(
         [goldText](const GoldChangedSignal &signal)

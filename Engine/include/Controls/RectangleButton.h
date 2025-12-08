@@ -10,6 +10,10 @@
 
 namespace sf
 {
+class RectangleShape;
+}
+namespace sf
+{
 class Shape;
 } // namespace sf
 
@@ -24,11 +28,11 @@ namespace xl
 {
 class TextMesh;
 
-class Button : public LayoutObject<sf::Shape>, public std::enable_shared_from_this<Button>
+class RectangleButton : public LayoutObject<sf::RectangleShape>, public std::enable_shared_from_this<RectangleButton>
 {
   public:
-    explicit Button(std::unique_ptr<sf::Shape> &&mesh);
-    ~Button() override;
+    explicit RectangleButton(const sf::RectangleShape &mesh);
+    ~RectangleButton() override;
 
     void SetLabel(const std::string &&label, const sf::Font &font);
 
