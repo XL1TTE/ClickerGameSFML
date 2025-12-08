@@ -24,9 +24,11 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     std::unique_ptr<sf::RectangleShape> button_rect   = std::make_unique<sf::RectangleShape>(sf::Vector2f(200.f, 200.f));
     const auto                          clickerButton = std::make_shared<ClickerButton>(std::move(button_rect));
 
+    clickerButton->SetLabel("Click", Fonts::FONT_DEFAULT);
+
     clickerButton->SetParent(root);
-    clickerButton->HorizontalCenter();
-    clickerButton->VerticalBottom();
+    clickerButton->DefineLayout(
+        {xl::Layout::HorizontalCenter, xl::Layout::VerticalBottom});
 
     auto goldText = std::make_shared<xl::TextMesh>(Fonts::FONT_DEFAULT);
     goldText->SetParent(root);
@@ -34,18 +36,14 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
         .SetFontSize(64)
         .SetText(std::to_string(G::GetGold()));
 
-    goldText->HorizontalCenter();
-    goldText->VerticalTop();
+    goldText->DefineLayout(
+        {xl::Layout::HorizontalCenter, xl::Layout::VerticalTop});
 
-    clickerButton->SetLabel(clickerButton, "Click", Fonts::FONT_DEFAULT);
-
-    RegisterEvent(
-        xl::xlEngine::GetBus()
-            .subscribe<GoldChangedSignal>(
-                [goldText](const GoldChangedSignal &signal)
-                {
-                    goldText->SetText(std::to_string(signal.m_value));
-                }));
+    RegisterEvent(xl::xlEngine::GetBus().subscribe<GoldChangedSignal>(
+        [goldText](const GoldChangedSignal &signal)
+        {
+            goldText->SetText(std::to_string(signal.m_value));
+        }));
 
     WithObject(root);
     WithObject(goldText);

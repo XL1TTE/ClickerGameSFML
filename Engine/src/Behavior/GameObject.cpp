@@ -10,31 +10,15 @@ using namespace xl;
 
 void GameObject::Awake()
 {
-    for (auto &child : m_childrens)
-    {
-        child.lock()->Awake();
-    }
 }
 void GameObject::Update(const int32_t &dt)
 {
-    for (auto &child : m_childrens)
-    {
-        child.lock()->Update(dt);
-    }
 }
 void GameObject::Destroy()
 {
-    for (auto &child : m_childrens)
-    {
-        child.lock()->Destroy();
-    }
 }
 void GameObject::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
 {
-    for (auto &child : m_childrens)
-    {
-        child.lock()->Draw(drawer);
-    }
 }
 sf::Vector2f GameObject::GetSize() const
 {

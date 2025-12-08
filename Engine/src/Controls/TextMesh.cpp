@@ -17,8 +17,7 @@ TextMesh::TextMesh(const sf::Font &font)
 }
 void TextMesh::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
 {
-    GameObject::Draw(drawer);
-
+    LayoutObject::Draw(drawer);
     drawer.lock()->draw(*m_Mesh);
 }
 TextMesh &TextMesh::SetText(const std::string &text)

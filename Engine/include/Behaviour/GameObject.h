@@ -30,7 +30,6 @@ class GameObject
   protected:
     std::vector<std::weak_ptr<IBehaviourObject>> m_behaviours;
     std::weak_ptr<GameObject>                    m_parent;
-    std::vector<std::weak_ptr<GameObject>>       m_childrens;
 
   public:
     virtual void Awake();

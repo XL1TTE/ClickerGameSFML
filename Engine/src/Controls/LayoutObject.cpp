@@ -2,7 +2,7 @@
 // Created by XL1TTE on 07.12.2025.
 //
 
-#include "../../include/Controls/LayoutObject.h"
+#include "Controls/LayoutObject.h"
 
 #include "SFML/Graphics/Shape.hpp"
 #include "SFML/Graphics/Text.hpp"
@@ -17,6 +17,34 @@ LayoutObject<T>::LayoutObject(std::unique_ptr<T> &&mesh)
 {
 }
 
+template <typename T>
+void LayoutObject<T>::ApplyAllStyles() const
+{
+    for (const auto &style : m_Styles)
+    {
+        switch (style)
+        {
+        case Layout::HorizontalCenter:
+            HorizontalCenter();
+            break;
+        case Layout::HorizontalLeft:
+            HorizontalLeft();
+            break;
+        case Layout::HorizontalRight:
+            HorizontalRight();
+            break;
+        case Layout::VerticalTop:
+            VerticalTop();
+            break;
+        case Layout::VerticalBottom:
+            VerticalBottom();
+            break;
+        case Layout::VerticalCenter:
+            VerticalCenter();
+            break;
+        }
+    }
+}
 template <typename T>
 void LayoutObject<T>::PivotToCenter() const
 {
@@ -100,8 +128,6 @@ void LayoutObject<T>::HorizontalCenter() const
     {
         auto [x, y]             = GetPosition();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [w, h]             = parent->GetSize();
-
         m_Mesh->setPosition(
             {parentX, y});
     }
@@ -114,11 +140,21 @@ void LayoutObject<T>::VerticalCenter() const
     {
         auto [x, y]             = GetPosition();
         auto [parentX, parentY] = parent->GetPosition();
-        auto [w, h]             = parent->GetSize();
 
         m_Mesh->setPosition(
             {x, parentY});
     }
+}
+template <typename T>
+void LayoutObject<T>::DefineLayout(std::vector<Layout> &&styles)
+{
+    m_Styles = std::move(styles);
+}
+template <typename T>
+void LayoutObject<T>::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
+{
+    ApplyAllStyles();
+    GameObject::Draw(weak_ptr);
 }
 
 template class LayoutObject<sf::Shape>;

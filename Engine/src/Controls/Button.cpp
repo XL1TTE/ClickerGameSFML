@@ -19,19 +19,17 @@ Button::Button(std::unique_ptr<sf::Shape> &&mesh)
 }
 Button::~Button() = default;
 
-void Button::SetLabel(std::unique_ptr<TextMesh> &label)
-{
-    m_label = std::move(label);
-}
-void Button::SetLabel(const std::shared_ptr<Button> &shared_this, const std::string &&label, const sf::Font &font)
+void Button::SetLabel(const std::string &&label, const sf::Font &font)
 {
     m_label = std::make_unique<xl::TextMesh>(font);
     m_label->SetText(label);
 
-    m_label->SetParent(shared_this);
+    m_label->SetParent(shared_from_this());
 
-    m_label->HorizontalCenter();
-    m_label->VerticalCenter();
+    m_label->DefineLayout({
+        Layout::HorizontalCenter,
+        Layout::VerticalCenter,
+    });
 }
 void Button::ChangeText(const std::string &text) const
 {
@@ -56,6 +54,7 @@ sf::Vector2<float> Button::GetSize() const
 
 void Button::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
+    LayoutObject::Draw(weak_ptr);
     if (const auto renderer = weak_ptr.lock())
     {
         renderer->draw(*m_Mesh);

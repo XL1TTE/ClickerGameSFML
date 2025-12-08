@@ -11,6 +11,7 @@
 #include "Behaviour/IBehaviourObject.h"
 #include "Controls/Container.h"
 #include "Controls/RootContainer.h"
+#include "Controls/Layout.h"
 #include "Scenes/IGameScene.h"
 #include "SignalBus/SignalBus.h"
 #include "SignalBus/Signals/ISignal.h"

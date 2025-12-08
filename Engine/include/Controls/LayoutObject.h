@@ -5,7 +5,7 @@
 #ifndef XLENGINE_LAYOUTOBJECT_H
 #define XLENGINE_LAYOUTOBJECT_H
 #include "Behaviour/GameObject.h"
-#include "SFML/Graphics/Transformable.hpp"
+#include "Layout.h"
 
 namespace xl
 {
@@ -18,11 +18,12 @@ class LayoutObject : public GameObject
     ~LayoutObject() override = default;
 
   protected:
-    std::unique_ptr<T> m_Mesh;
+    std::unique_ptr<T>  m_Mesh;
+    std::vector<Layout> m_Styles;
+
+    virtual void ApplyAllStyles() const;
 
     void PivotToCenter() const;
-
-  public:
     void AlignCenter() const;
     void VerticalBottom() const;
     void VerticalTop() const;
@@ -30,6 +31,10 @@ class LayoutObject : public GameObject
     void HorizontalRight() const;
     void HorizontalCenter() const;
     void VerticalCenter() const;
+
+  public:
+    void DefineLayout(std::vector<Layout> &&styles);
+    void Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 };
 
 } // namespace xl

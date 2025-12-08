@@ -24,14 +24,13 @@ namespace xl
 {
 class TextMesh;
 
-class Button : public LayoutObject<sf::Shape>
+class Button : public LayoutObject<sf::Shape>, public std::enable_shared_from_this<Button>
 {
   public:
     explicit Button(std::unique_ptr<sf::Shape> &&mesh);
     ~Button() override;
 
-    void SetLabel(std::unique_ptr<TextMesh> &label);
-    void SetLabel(const std::shared_ptr<Button> &shared_this, const std::string &&label, const sf::Font &font);
+    void SetLabel(const std::string &&label, const sf::Font &font);
 
     void ChangeText(const std::string &text) const;
     void SetColor(const sf::Color &color) const;
