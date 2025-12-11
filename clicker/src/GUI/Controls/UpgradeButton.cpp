@@ -48,7 +48,7 @@ void UpgradeButton::Awake()
 
 bool UpgradeButton::CanAffordBuy(const float &gold) const
 {
-    if (m_Stat.lock()->m_cost < gold)
+    if (m_Stat.lock()->getCost() > gold)
     {
         return false;
     }

@@ -178,6 +178,7 @@ class SignalBus final
     SignalBus()                             = default;
     SignalBus(const SignalBus &)            = delete;
     SignalBus &operator=(const SignalBus &) = delete;
+    ~SignalBus()                            = default;
 
     static SignalBus &get()
     {

@@ -33,7 +33,7 @@ struct GameSession
 
         int m_level    = 1;
         int m_maxLevel = 99;
-        int m_cost     = 100;
+        int m_cost     = 10;
 
         [[nodiscard]] virtual double value() const = 0;
         virtual void                 levelUp()
@@ -81,6 +81,7 @@ inline float GameSession::GetHealthPercent() const
 inline void GameSession::AddGold(const float value)
 {
     m_gold += value;
+    xl::xlEngine::GetBus().emit(GoldChangedSignal(m_gold));
 }
 inline void GameSession::AddHealth(const int value)
 {

@@ -148,5 +148,12 @@ void xlEngine::SetFrameRate(const uint8_t limit) noexcept
 }
 void xlEngine::Exit() noexcept
 {
+    DestroyScene();
+
+    if (Get().m_windowPtr)
+    {
+        Get().m_windowPtr->close();
+    }
+
     Get().isExited = true;
 }
