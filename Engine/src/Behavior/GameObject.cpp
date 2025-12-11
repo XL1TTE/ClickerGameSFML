@@ -3,8 +3,12 @@
 //
 
 #include "Behaviour/GameObject.h"
+
 #include "SFML/Graphics/Transform.hpp"
 #include "SFML/System/Vector2.hpp"
+#include "SignalBus/SignalBus.h"
+#include "SignalBus/Signals/ISignal.h"
+#include "xlEngine.h"
 
 using namespace xl;
 
@@ -16,6 +20,14 @@ void GameObject::Update(const float dt)
 }
 void GameObject::OnDestroy()
 {
+    for (auto &evt : m_events)
+    {
+        if (evt != nullptr)
+        {
+            evt.reset();
+        }
+    }
+    m_events.clear();
 }
 void GameObject::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)
 {

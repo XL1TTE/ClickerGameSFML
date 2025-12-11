@@ -31,3 +31,6 @@ sf::Vector2<float> RootContainer::GetPosition() const
 {
     return m_root.lock()->getView().getCenter();
 }
+void RootContainer::Draw(const std::weak_ptr<sf::RenderTarget> &)
+{
+}

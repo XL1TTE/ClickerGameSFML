@@ -22,6 +22,6 @@ class ClickerButton final : public xl::RectangleButton,
     void               OnPointerClick(const sf::Event::MouseButtonPressed &event) override;
     void               OnPointerEnter(PointerEnterEvent event) override;
     void               OnPointerExit(PointerExitEvent event) override;
-    sf::Vector2<float> GetSize() override;
+    sf::Vector2<float> GetSize() const override;
 };
 #endif // EARN_POINT_BUTTON

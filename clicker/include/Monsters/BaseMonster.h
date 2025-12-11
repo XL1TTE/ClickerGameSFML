@@ -33,11 +33,11 @@ class BaseMonster final : public xl::LayoutObject<sf::Sprite>,
     void Attack() const;
 
   public:
-    sf::Vector2<float> GetSize() override;
-    bool               Contains(sf::Vector2<float> point) override;
-    void               OnPointerClick(const sf::Event::MouseButtonPressed &event) override;
-    void               OnPointerEnter(PointerEnterEvent event) override;
-    void               Draw(const std::weak_ptr<sf::RenderTarget> &) override;
+    bool                             Contains(sf::Vector2<float> point) override;
+    void                             OnPointerClick(const sf::Event::MouseButtonPressed &event) override;
+    void                             OnPointerEnter(PointerEnterEvent event) override;
+    void                             Draw(const std::weak_ptr<sf::RenderTarget> &) override;
+    [[nodiscard]] sf::Vector2<float> GetSize() const override;
 };
 
 #endif // CLICKER_BASEMONSTER_H

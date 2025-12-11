@@ -16,11 +16,11 @@ ClickerButton::ClickerButton(const sf::RectangleShape &mesh)
 }
 bool ClickerButton::Contains(const sf::Vector2<float> point)
 {
-    return RectangleButton::m_Mesh->getGlobalBounds().contains(point);
+    return m_Mesh->getGlobalBounds().contains(point);
 }
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
-    G::GetSession().AddGold(1);
+    G::GetSession().AddGold(G::GetSession().Stats.GoldPerClick);
     xl::xlEngine::GetBus().emit(GoldChangedSignal(G::GetSession().GetGold()));
 }
 void ClickerButton::OnPointerEnter(PointerEnterEvent event)
@@ -33,7 +33,7 @@ void ClickerButton::OnPointerExit(PointerExitEvent event)
     m_label->SetColor(sf::Color::White);
     m_Mesh->setFillColor(sf::Color::Blue);
 }
-sf::Vector2<float> ClickerButton::GetSize()
+sf::Vector2<float> ClickerButton::GetSize() const
 {
     return m_Mesh->getGlobalBounds().size;
 }

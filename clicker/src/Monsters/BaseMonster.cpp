@@ -34,10 +34,9 @@ void BaseMonster::Update(const float dt)
 }
 void BaseMonster::Attack() const
 {
-    std::cout << "Monster attacked with " << m_AttackDamage << "dmg!" << std::endl;
     xl::xlEngine::GetBus().emit(MonsterAttackedSignal(m_AttackDamage));
 }
-sf::Vector2<float> BaseMonster::GetSize()
+sf::Vector2<float> BaseMonster::GetSize() const
 {
     return m_Mesh->getGlobalBounds().size;
 }

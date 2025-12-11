@@ -6,6 +6,7 @@
 #define XLENGINE_ENGINE_H
 #include "SFML/System/Clock.hpp"
 #include <memory>
+#include <random>
 
 namespace xl
 {
@@ -64,6 +65,20 @@ class xlEngine final
     static void                            SetFrameRate(uint8_t limit) noexcept;
     static bool                            IsExist() noexcept;
     static void                            Exit() noexcept;
+
+  public:
+    class Math
+    {
+      public:
+        static float RandFloat(float min, float max)
+        {
+            std::random_device rd;
+            std::mt19937       eng(rd.entropy() ? rd() : std::chrono::steady_clock::now().time_since_epoch().count());
+
+            std::uniform_real_distribution distr(min, max);
+            return distr(eng);
+        }
+    };
 };
 } // namespace xl
 #endif // XLENGINE_ENGINE_H

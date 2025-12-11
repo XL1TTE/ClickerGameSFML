@@ -18,10 +18,10 @@ namespace xl
 class IHaveCollider
 {
   public:
-    IHaveCollider()                                               = default;
-    virtual ~IHaveCollider()                                      = default;
-    virtual sf::Vector2<float> GetSize()                          = 0;
-    virtual bool               Contains(sf::Vector2<float> point) = 0;
+    IHaveCollider()                                                             = default;
+    virtual ~IHaveCollider()                                                    = default;
+    [[nodiscard]] virtual sf::Vector2<float> GetSize() const                    = 0;
+    virtual bool                             Contains(sf::Vector2<float> point) = 0;
 };
 } // namespace xl
 

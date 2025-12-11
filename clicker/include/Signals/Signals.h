@@ -10,11 +10,10 @@ class GoldChangedSignal : public xl::ISignal
 {
   public:
     explicit GoldChangedSignal(const unsigned int value)
+        : m_value(value)
     {
-        m_value = value;
     }
 
-  public:
     unsigned int m_value;
 };
 
@@ -22,12 +21,22 @@ class MonsterAttackedSignal : public xl::ISignal
 {
   public:
     explicit MonsterAttackedSignal(const int damage)
+        : m_damage(damage)
     {
-        m_damage = damage;
     }
 
+    int m_damage;
+};
+class PlayerHealthChanged : public xl::ISignal
+{
   public:
-    unsigned int m_damage;
+    explicit PlayerHealthChanged(const int health, float healthPercent)
+        : m_health(health), m_healthPercent(healthPercent)
+    {
+    }
+
+    int   m_health;
+    float m_healthPercent;
 };
 
 #endif // CLICKER_GOLDCHANGEDSIGNAL_H

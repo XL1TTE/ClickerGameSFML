@@ -18,9 +18,10 @@ class RootContainer final : public GameObject
     std::weak_ptr<sf::RenderTarget> m_root;
 
   public:
-    sf::Transform      GetTransform() const override;
-    sf::Vector2<float> GetSize() const override;
-    sf::Vector2<float> GetPosition() const override;
+    [[nodiscard]] sf::Transform      GetTransform() const override;
+    [[nodiscard]] sf::Vector2<float> GetSize() const override;
+    [[nodiscard]] sf::Vector2<float> GetPosition() const override;
+    void                             Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 };
 } // namespace xl
 #endif // XLENGINE_ROOTCONTAINER_H
