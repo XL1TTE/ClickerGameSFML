@@ -1,5 +1,4 @@
-#include "GUI/Scenes/MainScene.h"
-
+#include "Scenes/MainScene.h"
 #include "Controls/LayoutObject.h"
 #include "Controls/RectangleButton.h"
 #include "Controls/RootContainer.h"
@@ -8,6 +7,7 @@
 #include "GUI/Controls/ClickerButton.h"
 #include "GUI/Controls/HealthBar.h"
 #include "GUI/Controls/MonsterSpawner.h"
+#include "GUI/Controls/SceneSwitchButton.h"
 #include "GUI/Fonts.h"
 #include "Monsters/BaseMonster.h"
 #include "Resources.h"
@@ -39,7 +39,7 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     goldText->SetParent(root);
     goldText->SetColor(sf::Color::Yellow)
         .SetFontSize(64)
-        .SetText(std::to_string(G::GetSession().GetGold()));
+        .SetText(std::to_string(static_cast<int>(G::GetSession().GetGold())));
 
     goldText->Margin({32, 32});
     goldText->DefineLayout(
@@ -53,6 +53,11 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     healthBar->SetParent(root);
     healthBar->DefineLayout({xl::Layout::VerticalBottom, xl::Layout::HorizontalLeft});
     healthBar->Margin({32, 32});
+
+    auto toShop = std::make_shared<SceneSwitchButton>(*SPR_MAIN_SCENE_BUTTON(), SHOP_SCENE);
+    toShop->SetParent(root);
+    toShop->DefineLayout({xl::Layout::HorizontalRight, xl::Layout::VerticalBottom});
+    toShop->Margin({32, 32});
 
     RegisterEvent(xl::xlEngine::GetBus().subscribe<GoldChangedSignal>(
         [goldText](const GoldChangedSignal &signal)
@@ -73,12 +78,18 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
                 // xl::xlEngine::Exit();
             }
         }));
+    RegisterEvent(xl::xlEngine::GetBus().subscribe<SceneSwitchRequest>(
+        [renderer](const SceneSwitchRequest &signal)
+        {
+            Scenes::SwitchScene(renderer, signal.m_scene);
+        }));
 
     WithObject(root);
     WithObject(goldText);
     WithObject(clickerButton);
     WithObject(healthBar);
     WithObject(monsterSpawner);
+    WithObject(toShop);
 }
 std::unique_ptr<xl::IGameScene> MainScene::clone() const
 {

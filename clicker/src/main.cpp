@@ -10,14 +10,14 @@ using namespace xl;
 
 int main()
 {
-    xlEngine::New();
+    xlEngine::Get();
     xlEngine::SetFrameRate(144);
 
     const auto window = xlEngine::GetWindow().lock();
 
     xlEngine::SetScene(Scenes::CreateMainScene(window));
 
-    while (xlEngine::IsExist())
+    while (xlEngine::IsExited() == false)
     {
         xlEngine::Update();
 

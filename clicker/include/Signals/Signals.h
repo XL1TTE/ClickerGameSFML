@@ -4,6 +4,7 @@
 
 #ifndef CLICKER_GOLDCHANGEDSIGNAL_H
 #define CLICKER_GOLDCHANGEDSIGNAL_H
+#include "Scenes/Scenes.h"
 #include "SignalBus/Signals/ISignal.h"
 
 class GoldChangedSignal : public xl::ISignal
@@ -37,6 +38,18 @@ class PlayerHealthChanged : public xl::ISignal
 
     int   m_health;
     float m_healthPercent;
+};
+
+class SceneSwitchRequest : public xl::ISignal
+{
+
+  public:
+    explicit SceneSwitchRequest(const SceneName &scene)
+        : m_scene(scene)
+    {
+    }
+
+    SceneName m_scene;
 };
 
 #endif // CLICKER_GOLDCHANGEDSIGNAL_H

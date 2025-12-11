@@ -56,8 +56,14 @@ class Delegate final : public IDelegate
 
     void invoke(const Param &param)
     {
-        for (const auto &pair : m_handlers)
+        std::unordered_map<SubscriptionToken, HandlerFunction> handlersCopy = m_handlers;
+
+        for (const auto &pair : handlersCopy)
         {
+            if (!m_handlers.contains(pair.first))
+            {
+                continue;
+            }
             pair.second(param);
         }
     }
@@ -173,13 +179,11 @@ class SignalBus final
     SignalBus(const SignalBus &)            = delete;
     SignalBus &operator=(const SignalBus &) = delete;
 
-  private:
-    static std::unique_ptr<SignalBus>                               m_instance;
-    std::unordered_map<std::type_index, std::unique_ptr<IDelegate>> m_registar;
-
-  public:
-    static SignalBus &create();
-    static SignalBus &get();
+    static SignalBus &get()
+    {
+        static SignalBus instance;
+        return instance;
+    }
 };
 
 } // namespace xl

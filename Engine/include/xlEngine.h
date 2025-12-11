@@ -25,29 +25,24 @@ class IGameScene;
 class xlEngine final
 {
   public:
-    xlEngine() noexcept;
-
     xlEngine(const xlEngine &)            = delete;
     xlEngine &operator=(const xlEngine &) = delete;
     xlEngine(xlEngine &&)                 = delete;
     xlEngine &operator=(xlEngine &&)      = delete;
 
-  public:
+  private:
+    xlEngine() noexcept;
     ~xlEngine() = default;
 
-  private:
-    static std::unique_ptr<xlEngine> m_instance;
-
+    bool                        isExited = false;
     std::unique_ptr<sf::Clock>  m_clock;
     float                       m_deltaTime = 0.0f;
     std::unique_ptr<IGameScene> m_currentScene;
-    std::shared_ptr<SignalBus>  m_signalBus;
 
   public:
     std::shared_ptr<sf::RenderWindow> m_windowPtr;
 
-  public:
-    static xlEngine  &New() noexcept;
+    static xlEngine  &Get() noexcept;
     static SignalBus &GetBus() noexcept;
 
     /**
@@ -63,7 +58,7 @@ class xlEngine final
     static void                            SetScene(std::unique_ptr<IGameScene> scene);
     static void                            DestroyScene();
     static void                            SetFrameRate(uint8_t limit) noexcept;
-    static bool                            IsExist() noexcept;
+    static bool                            IsExited() noexcept;
     static void                            Exit() noexcept;
 
   public:

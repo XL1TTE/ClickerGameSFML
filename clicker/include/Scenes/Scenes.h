@@ -14,6 +14,13 @@ namespace sf
 {
 class RenderTarget;
 }
+
+enum SceneName
+{
+    MAIN_SCENE,
+    SHOP_SCENE
+};
+
 class Scenes
 {
   public:
@@ -22,6 +29,8 @@ class Scenes
   public:
     static std::unique_ptr<xl::IGameScene> GetMainScene();
     static std::unique_ptr<xl::IGameScene> CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer);
+    static std::unique_ptr<xl::IGameScene> CreateShopScene(const std::weak_ptr<sf::RenderTarget> &renderer);
+    static void                            SwitchScene(const std::weak_ptr<sf::RenderTarget> &renderer, const SceneName &sceneName);
 };
 
 #define MAIN_SCENE_INSTANTIATE Scenes::GetMainScene()

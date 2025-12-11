@@ -20,7 +20,7 @@ bool ClickerButton::Contains(const sf::Vector2<float> point)
 }
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
-    G::GetSession().AddGold(G::GetSession().Stats.GoldPerClick);
+    G::GetSession().AddGold(G::GetSession().m_Stats["gold_per_click"]->value());
     xl::xlEngine::GetBus().emit(GoldChangedSignal(G::GetSession().GetGold()));
 }
 void ClickerButton::OnPointerEnter(PointerEnterEvent event)

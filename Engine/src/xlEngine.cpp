@@ -11,11 +11,8 @@
 
 using namespace xl;
 
-std::unique_ptr<xlEngine> xlEngine::m_instance = nullptr;
-
 xlEngine::xlEngine() noexcept
-    : m_signalBus(std::make_shared<SignalBus>()),
-      m_windowPtr(std::make_shared<sf::RenderWindow>(
+    : m_windowPtr(std::make_shared<sf::RenderWindow>(
           sf::VideoMode({640u, 800u}),
           "Clicker",
           sf::Style::Titlebar | sf::Style::Close))
@@ -24,86 +21,66 @@ xlEngine::xlEngine() noexcept
 
 void xlEngine::UpdateScreen() noexcept
 {
-    if (!IsExist())
-    {
-        return;
-    }
 
-    const auto window = m_instance->m_windowPtr;
+    const auto window = Get().m_windowPtr;
 
     window->clear();
 
-    if (m_instance->m_currentScene != nullptr)
+    if (Get().m_currentScene != nullptr)
     {
-        m_instance->m_currentScene->Draw(window);
+        Get().m_currentScene->Draw(window);
     }
 
     window->display();
 }
 
-bool xlEngine::IsExist() noexcept
+bool xlEngine::IsExited() noexcept
 {
-    return m_instance != nullptr;
+    return Get().isExited;
 }
 
-xlEngine &xlEngine::New() noexcept
+xlEngine &xlEngine::Get() noexcept
 {
-    if (IsExist() == false)
-    {
-        m_instance = std::make_unique<xlEngine>();
-    }
-    return *m_instance;
+    static xlEngine instance;
+    return instance;
 }
 xl::SignalBus &xlEngine::GetBus() noexcept
 {
-    if (m_instance->m_signalBus == nullptr)
-    {
-        m_instance->m_signalBus = std::make_shared<xl::SignalBus>();
-        return *m_instance->m_signalBus;
-    }
-    return *m_instance->m_signalBus;
+    return SignalBus::get();
 }
 
 void xlEngine::Update()
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
 
-    if (m_instance->m_clock == nullptr)
+    if (Get().m_clock == nullptr)
     {
-        m_instance->m_clock = std::make_unique<sf::Clock>(sf::Clock());
+        Get().m_clock = std::make_unique<sf::Clock>(sf::Clock());
     }
 
     // Delta time calculations -->
-    const auto &game  = m_instance;
-    game->m_deltaTime = static_cast<float>(game->m_clock->restart().asMilliseconds()) / 1000;
+    auto &game       = Get();
+    game.m_deltaTime = static_cast<float>(game.m_clock->restart().asMilliseconds()) / 1000;
     // <-- Delta time calculation
 
     // Awake loop -->
-    if (game->m_currentScene != nullptr && game->m_currentScene->m_IsInitialized == false)
+    if (game.m_currentScene != nullptr && game.m_currentScene->m_IsInitialized == false)
     {
-        game->m_currentScene->Awake();
-        game->m_currentScene->m_IsInitialized = true;
+        game.m_currentScene->Awake();
+        game.m_currentScene->m_IsInitialized = true;
     }
     // <-- Awake loop
 
     // Game loop -->
-    if (game->m_currentScene != nullptr)
+    if (game.m_currentScene != nullptr)
     {
-        game->m_currentScene->Update(game->m_deltaTime);
+        game.m_currentScene->Update(game.m_deltaTime);
         EventsUpdate();
     }
     // <-- Game loop
 }
 void xlEngine::EventsUpdate() noexcept
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
-    const auto &window = m_instance->m_windowPtr;
+    const auto &window = Get().m_windowPtr;
 
     if (window != nullptr)
     {
@@ -115,15 +92,15 @@ void xlEngine::EventsUpdate() noexcept
             }
             if (auto evt = event.value().getIf<sf::Event::Closed>())
             {
-                xlEngine::Exit();
+                Exit();
             }
             if (auto evt = event.value().getIf<sf::Event::MouseMoved>())
             {
-                MouseEventsSystem::ProcessPointerEvents(*m_instance->m_windowPtr, *m_instance->m_currentScene);
+                MouseEventsSystem::ProcessPointerEvents(*Get().m_windowPtr, *Get().m_currentScene);
             }
             if (const auto evt = event.value().getIf<sf::Event::MouseButtonPressed>())
             {
-                MouseEventsSystem::ProcessClickEvent(*evt, *m_instance->m_windowPtr, *m_instance->m_currentScene);
+                MouseEventsSystem::ProcessClickEvent(*evt, *Get().m_windowPtr, *Get().m_currentScene);
             }
         }
     }
@@ -131,27 +108,15 @@ void xlEngine::EventsUpdate() noexcept
 
 std::weak_ptr<sf::RenderWindow> xlEngine::GetWindow()
 {
-    if (IsExist() == false)
-    {
-        throw std::runtime_error("Create Game via Game::New first.");
-    }
-    return m_instance->m_windowPtr;
+    return Get().m_windowPtr;
 }
 void xlEngine::SpawnObject(const std::shared_ptr<GameObject> &obj)
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
-    m_instance->m_currentScene->WithObject(obj);
+    Get().m_currentScene->WithObject(obj);
 }
 void xlEngine::DestroyObject(const std::shared_ptr<GameObject> &obj)
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
-    auto &objects = m_instance->m_currentScene->m_Objects;
+    auto &objects = Get().m_currentScene->m_Objects;
 
     if (const auto it = std::ranges::find(objects.begin(), objects.end(), obj); it != objects.end())
     {
@@ -163,38 +128,25 @@ void xlEngine::DestroyObject(const std::shared_ptr<GameObject> &obj)
 
 void xlEngine::SetScene(std::unique_ptr<IGameScene> scene)
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
-
     DestroyScene();
-    m_instance->m_currentScene = std::move(scene);
+    Get().m_currentScene = std::move(scene);
 }
 
 void xlEngine::DestroyScene()
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
 
-    if (const auto &game = m_instance; game->m_currentScene != nullptr)
+    if (const auto &game = Get(); game.m_currentScene != nullptr)
     {
-        game->m_currentScene->Destroy();
-        game->m_currentScene->m_IsInitialized = false;
+        game.m_currentScene->Destroy();
+        game.m_currentScene->m_IsInitialized = false;
     }
 }
 
 void xlEngine::SetFrameRate(const uint8_t limit) noexcept
 {
-    if (IsExist() == false)
-    {
-        return;
-    }
-    m_instance->m_windowPtr->setFramerateLimit(limit);
+    Get().m_windowPtr->setFramerateLimit(limit);
 }
 void xlEngine::Exit() noexcept
 {
-    m_instance = nullptr;
+    Get().isExited = true;
 }
