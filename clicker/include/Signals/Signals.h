@@ -18,4 +18,16 @@ class GoldChangedSignal : public xl::ISignal
     unsigned int m_value;
 };
 
+class MonsterAttackedSignal : public xl::ISignal
+{
+  public:
+    explicit MonsterAttackedSignal(const int damage)
+    {
+        m_damage = damage;
+    }
+
+  public:
+    unsigned int m_damage;
+};
+
 #endif // CLICKER_GOLDCHANGEDSIGNAL_H

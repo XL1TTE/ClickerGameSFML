@@ -1,10 +1,8 @@
 
 
-#include "../../Engine/include/xlEngine.h"
-#include "G.h"
+#include "Resources.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "Scenes/Scenes.h"
-#include "Signals/Signals.h"
 
 #include <XL_ENGINE_H>
 
@@ -16,8 +14,6 @@ int main()
     xlEngine::SetFrameRate(144);
 
     const auto window = xlEngine::GetWindow().lock();
-
-    Scenes::LoadScenes(window);
 
     xlEngine::SetScene(Scenes::CreateMainScene(window));
 

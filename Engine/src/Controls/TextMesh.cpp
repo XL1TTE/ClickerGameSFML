@@ -65,7 +65,7 @@ sf::Transform TextMesh::GetTransform() const
     return m_Mesh->getTransform();
 }
 
-void TextMesh::Destroy()
+void TextMesh::OnDestroy()
 {
-    GameObject::Destroy();
+    GameObject::OnDestroy();
 }

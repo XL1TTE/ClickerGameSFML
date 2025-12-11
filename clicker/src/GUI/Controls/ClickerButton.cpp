@@ -4,6 +4,7 @@
 
 #include "GUI/Controls/ClickerButton.h"
 
+#include "Controls/TextMesh.h"
 #include "G.h"
 #include "SignalBus/SignalBus.h"
 #include "Signals/Signals.h"
@@ -19,11 +20,18 @@ bool ClickerButton::Contains(const sf::Vector2<float> point)
 }
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
-    G::AddGold(1);
-    xl::xlEngine::GetBus().emit(GoldChangedSignal(G::GetGold()));
+    G::GetSession().AddGold(1);
+    xl::xlEngine::GetBus().emit(GoldChangedSignal(G::GetSession().GetGold()));
 }
 void ClickerButton::OnPointerEnter(PointerEnterEvent event)
 {
+    m_label->SetColor(sf::Color::Black);
+    m_Mesh->setFillColor(sf::Color::White);
+}
+void ClickerButton::OnPointerExit(PointerExitEvent event)
+{
+    m_label->SetColor(sf::Color::White);
+    m_Mesh->setFillColor(sf::Color::Blue);
 }
 sf::Vector2<float> ClickerButton::GetSize()
 {

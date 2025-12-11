@@ -6,18 +6,13 @@
 #include <algorithm>
 #include <iostream>
 
-std::uint32_t G::m_gold = 0;
+GameSession G::m_GameSession = GameSession();
 
-std::uint32_t G::GetGold()
+void G::NewSession()
 {
-    return m_gold;
+    m_GameSession = GameSession();
 }
-void G::AddGold(const uint32_t amount)
+GameSession &G::GetSession()
 {
-    std::cout << "Added gold: " << amount << "\n";
-    G::m_gold += amount;
-}
-void G::RemoveGold(const uint32_t amount)
-{
-    G::m_gold = std::ranges::min(G::m_gold - amount, static_cast<unsigned int>(0));
+    return m_GameSession;
 }

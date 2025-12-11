@@ -11,10 +11,10 @@ using namespace xl;
 void GameObject::Awake()
 {
 }
-void GameObject::Update(const int32_t &dt)
+void GameObject::Update(const float dt)
 {
 }
-void GameObject::Destroy()
+void GameObject::OnDestroy()
 {
 }
 void GameObject::Draw(const std::weak_ptr<sf::RenderTarget> &drawer)

@@ -23,6 +23,9 @@ class GameObject;
 
 class IGameScene
 {
+
+    friend class xlEngine;
+
   public:
     bool m_IsInitialized = false;
 
@@ -48,7 +51,7 @@ class IGameScene
 
   public:
     void Awake() const;
-    void Update(const int32_t &dt) const;
+    void Update(const float dt) const;
     void Draw(const std::weak_ptr<sf::RenderTarget> &) const;
     void Destroy();
 

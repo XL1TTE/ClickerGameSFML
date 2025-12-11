@@ -35,7 +35,7 @@ class TextMesh final : public LayoutObject<sf::Text>
     sf::Vector2<float> GetPosition() const override;
     sf::Transform      GetTransform() const override;
 
-    void Destroy() override;
+    void OnDestroy() override;
 };
 } // namespace xl
 #endif // XLENGINE_TEXT_MESH_H

@@ -6,8 +6,12 @@
 #include "Controls/RectangleButton.h"
 #include "EventSystems/Events/IPointerClickHandler.h"
 #include "EventSystems/Events/IPointerEnterHandler.h"
+#include "EventSystems/Events/IPointerExitHandler.h"
 
-class ClickerButton final : public xl::RectangleButton, public xl::IPointerEnterHandler, public xl::IPointerClickHandler
+class ClickerButton final : public xl::RectangleButton,
+                            public xl::IPointerEnterHandler,
+                            public xl::IPointerExitHandler,
+                            public xl::IPointerClickHandler
 {
   public:
     explicit ClickerButton(const sf::RectangleShape &mesh);
@@ -17,6 +21,7 @@ class ClickerButton final : public xl::RectangleButton, public xl::IPointerEnter
 
     void               OnPointerClick(const sf::Event::MouseButtonPressed &event) override;
     void               OnPointerEnter(PointerEnterEvent event) override;
+    void               OnPointerExit(PointerExitEvent event) override;
     sf::Vector2<float> GetSize() override;
 };
 #endif // EARN_POINT_BUTTON

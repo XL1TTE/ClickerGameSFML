@@ -5,6 +5,7 @@
 #include "Controls/LayoutObject.h"
 
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
 
@@ -158,6 +159,11 @@ void LayoutObject<T>::VerticalCenter() const
     }
 }
 template <typename T>
+sf::Vector2<float> LayoutObject<T>::GetPosition() const
+{
+    return m_Mesh->getPosition();
+}
+template <typename T>
 void LayoutObject<T>::Margin(const xl::Margin &margin)
 {
     m_margin = margin;
@@ -171,7 +177,6 @@ template <typename T>
 void LayoutObject<T>::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
     ApplyAllStyles();
-    GameObject::Draw(weak_ptr);
 }
 
 template class LayoutObject<sf::RectangleShape>;

@@ -6,8 +6,12 @@
 #include "Controls/TextMesh.h"
 #include "G.h"
 #include "GUI/Controls/ClickerButton.h"
+#include "GUI/Controls/MonsterSpawner.h"
 #include "GUI/Fonts.h"
+#include "Monsters/BaseMonster.h"
+#include "Resources.h"
 #include "SFML/Graphics.hpp"
+#include "Scenes/Scenes.h"
 #include "Signals/Signals.h"
 #include "XL_ENGINE_H"
 
@@ -34,14 +38,18 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     goldText->SetParent(root);
     goldText->SetColor(sf::Color::Yellow)
         .SetFontSize(64)
-        .SetText(std::to_string(G::GetGold()));
+        .SetText(std::to_string(G::GetSession().GetGold()));
 
     goldText->Margin({32, 32});
     goldText->DefineLayout(
         {xl::Layout::HorizontalRight, xl::Layout::VerticalTop});
 
+    auto monsterSpawner = std::make_shared<MonsterSpawner>(
+        MonsterSpawner(root, 2,
+                       BaseMonster(*SPR_MONSTER(), 1, 3)));
+
     RegisterEvent(xl::xlEngine::GetBus().subscribe<GoldChangedSignal>(
-        [goldText](const GoldChangedSignal &signal)
+        [goldText, renderer](const GoldChangedSignal &signal)
         {
             goldText->SetText(std::to_string(signal.m_value));
         }));
@@ -49,6 +57,7 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     WithObject(root);
     WithObject(goldText);
     WithObject(clickerButton);
+    WithObject(monsterSpawner);
 }
 std::unique_ptr<xl::IGameScene> MainScene::clone() const
 {

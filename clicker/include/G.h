@@ -4,17 +4,18 @@
 
 #ifndef CLICKER_G_H
 #define CLICKER_G_H
+#include "Data/GameSession.h"
+
 #include <cstdint>
 
 class G
 {
   private:
-    static std::uint32_t m_gold;
+    static GameSession m_GameSession;
 
   public:
-    static std::uint32_t GetGold();
-    static void          AddGold(const uint32_t amount);
-    static void          RemoveGold(const uint32_t amount);
+    static void         NewSession();
+    static GameSession &GetSession();
 };
 
 #endif // CLICKER_G_H

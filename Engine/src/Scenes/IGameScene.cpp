@@ -31,7 +31,7 @@ void IGameScene::Awake() const
         obj->Awake();
     }
 }
-void IGameScene::Update(const int32_t &dt) const
+void IGameScene::Update(const float dt) const
 {
     for (const auto &obj : m_Objects)
     {
@@ -49,7 +49,7 @@ void IGameScene::Destroy()
 {
     for (const auto &obj : m_Objects)
     {
-        obj->Destroy();
+        obj->OnDestroy();
     }
 
     m_Objects.clear();

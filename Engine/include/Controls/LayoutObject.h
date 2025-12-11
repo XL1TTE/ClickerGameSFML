@@ -57,9 +57,10 @@ class LayoutObject : public GameObject
     void VerticalCenter() const;
 
   public:
-    void Margin(const Margin &margin);
-    void DefineLayout(std::vector<Layout> &&styles);
-    void Draw(const std::weak_ptr<sf::RenderTarget> &) override;
+    sf::Vector2<float> GetPosition() const override;
+    void               Margin(const Margin &margin);
+    void               DefineLayout(std::vector<Layout> &&styles);
+    void               Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 };
 
 } // namespace xl

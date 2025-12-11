@@ -8,6 +8,10 @@
 #include <memory>
 #include <vector>
 
+namespace xl
+{
+class IGameScene;
+}
 namespace sf
 {
 class Transformable;
@@ -24,6 +28,7 @@ class IBehaviourObject;
 
 class GameObject
 {
+
   public:
     virtual ~GameObject() = default;
 
@@ -33,8 +38,8 @@ class GameObject
 
   public:
     virtual void Awake();
-    virtual void Update(const int32_t &dt);
-    virtual void Destroy();
+    virtual void Update(const float dt);
+    virtual void OnDestroy();
     virtual void Draw(const std::weak_ptr<sf::RenderTarget> &);
 
     [[nodiscard]] virtual sf::Vector2<float> GetSize() const;

@@ -7,6 +7,10 @@
 #include "SFML/System/Clock.hpp"
 #include <memory>
 
+namespace xl
+{
+class GameObject;
+}
 namespace sf
 {
 class RenderWindow;
@@ -33,8 +37,8 @@ class xlEngine final
   private:
     static std::unique_ptr<xlEngine> m_instance;
 
-    sf::Clock                   m_clock     = sf::Clock();
-    int32_t                     m_deltaTime = 0.0f;
+    std::unique_ptr<sf::Clock>  m_clock;
+    float                       m_deltaTime = 0.0f;
     std::unique_ptr<IGameScene> m_currentScene;
     std::shared_ptr<SignalBus>  m_signalBus;
 
@@ -53,6 +57,8 @@ class xlEngine final
     static void                            EventsUpdate() noexcept;
     static void                            UpdateScreen() noexcept;
     static std::weak_ptr<sf::RenderWindow> GetWindow();
+    static void                            SpawnObject(const std::shared_ptr<GameObject> &obj);
+    static void                            DestroyObject(const std::shared_ptr<GameObject> &obj);
     static void                            SetScene(std::unique_ptr<IGameScene> scene);
     static void                            DestroyScene();
     static void                            SetFrameRate(uint8_t limit) noexcept;

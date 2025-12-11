@@ -71,9 +71,14 @@ void xlEngine::Update()
         return;
     }
 
+    if (m_instance->m_clock == nullptr)
+    {
+        m_instance->m_clock = std::make_unique<sf::Clock>(sf::Clock());
+    }
+
     // Delta time calculations -->
     const auto &game  = m_instance;
-    game->m_deltaTime = game->m_clock.restart().asMilliseconds();
+    game->m_deltaTime = static_cast<float>(game->m_clock->restart().asMilliseconds()) / 1000;
     // <-- Delta time calculation
 
     // Awake loop -->
@@ -131,6 +136,29 @@ std::weak_ptr<sf::RenderWindow> xlEngine::GetWindow()
         throw std::runtime_error("Create Game via Game::New first.");
     }
     return m_instance->m_windowPtr;
+}
+void xlEngine::SpawnObject(const std::shared_ptr<GameObject> &obj)
+{
+    if (IsExist() == false)
+    {
+        return;
+    }
+    m_instance->m_currentScene->WithObject(obj);
+}
+void xlEngine::DestroyObject(const std::shared_ptr<GameObject> &obj)
+{
+    if (IsExist() == false)
+    {
+        return;
+    }
+    auto &objects = m_instance->m_currentScene->m_Objects;
+
+    if (const auto it = std::ranges::find(objects.begin(), objects.end(), obj); it != objects.end())
+    {
+        (*it)->OnDestroy();
+
+        objects.erase(it);
+    }
 }
 
 void xlEngine::SetScene(std::unique_ptr<IGameScene> scene)
