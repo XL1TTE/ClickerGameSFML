@@ -18,9 +18,14 @@ bool ClickerButton::Contains(const sf::Vector2<float> point)
 {
     return m_Mesh->getGlobalBounds().contains(point);
 }
+void ClickerButton::Awake()
+{
+    m_gold_per_click        = G::GetSession().m_Stats["gold_per_click"];
+    m_strong_gold_per_click = G::GetSession().m_Stats["strong_gold_per_click"];
+}
 void ClickerButton::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
-    G::GetSession().AddGold(G::GetSession().m_Stats["gold_per_click"]->value());
+    G::GetSession().AddGold(m_gold_per_click->value() + m_strong_gold_per_click->value());
     xl::xlEngine::GetBus().emit(GoldChangedSignal(G::GetSession().GetGold()));
 }
 void ClickerButton::OnPointerEnter(PointerEnterEvent event)

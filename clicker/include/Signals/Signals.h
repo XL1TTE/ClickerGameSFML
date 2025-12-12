@@ -10,12 +10,12 @@
 class GoldChangedSignal : public xl::ISignal
 {
   public:
-    explicit GoldChangedSignal(const unsigned int value)
+    explicit GoldChangedSignal(const float value)
         : m_value(value)
     {
     }
 
-    unsigned int m_value;
+    float m_value;
 };
 
 class MonsterAttackedSignal : public xl::ISignal

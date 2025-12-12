@@ -28,7 +28,7 @@ namespace xl
 {
 class TextMesh;
 
-class RectangleButton : public LayoutObject<sf::RectangleShape>, public std::enable_shared_from_this<RectangleButton>
+class RectangleButton : public LayoutObject<sf::RectangleShape>
 {
   public:
     explicit RectangleButton(const sf::RectangleShape &mesh);

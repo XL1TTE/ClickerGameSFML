@@ -44,14 +44,16 @@ class IGameScene
   protected:
     std::vector<std::shared_ptr<SignalBus::IConnection>> m_Events;
     std::vector<std::shared_ptr<GameObject>>             m_Objects;
+    std::vector<std::shared_ptr<GameObject>>             m_PendingObjectsToAdd;
 
   protected:
     void RegisterEvent(const std::shared_ptr<SignalBus::IConnection> &connection);
     void WithObject(const std::shared_ptr<GameObject> &obj);
+    void ProcessPendingObjects();
 
   public:
     void Awake() const;
-    void Update(const float dt) const;
+    void Update(const float dt);
     void Draw(const std::weak_ptr<sf::RenderTarget> &) const;
     void Destroy();
 

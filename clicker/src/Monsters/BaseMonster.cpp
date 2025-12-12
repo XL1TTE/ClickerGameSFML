@@ -36,26 +36,26 @@ void BaseMonster::Attack() const
 {
     xl::xlEngine::GetBus().emit(MonsterAttackedSignal(m_AttackDamage));
 }
-sf::Vector2<float> BaseMonster::GetSize() const
-{
-    return m_Mesh->getGlobalBounds().size;
-}
 bool BaseMonster::Contains(sf::Vector2<float> point)
 {
     return m_Mesh->getGlobalBounds().contains(point);
 }
-
 void BaseMonster::OnPointerClick(const sf::Event::MouseButtonPressed &event)
 {
     isDied = true;
     std::cout << "Enemy is died" << std::endl;
     xl::xlEngine::DestroyObject(shared_from_this());
 }
+
 void BaseMonster::OnPointerEnter(PointerEnterEvent event)
 {
 }
 void BaseMonster::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
-    LayoutObject<sf::Sprite>::Draw(weak_ptr);
+    ApplyAllStyles();
     weak_ptr.lock()->draw(*m_Mesh);
+}
+sf::Vector2<float> BaseMonster::GetSize() const
+{
+    return m_Mesh->getGlobalBounds().size;
 }

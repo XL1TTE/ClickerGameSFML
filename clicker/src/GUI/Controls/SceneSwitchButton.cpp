@@ -32,7 +32,6 @@ void SceneSwitchButton::OnPointerEnter(PointerEnterEvent event)
 }
 void SceneSwitchButton::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
-    LayoutObject::Draw(weak_ptr);
-
+    ApplyAllStyles();
     weak_ptr.lock()->draw(*m_Mesh);
 }

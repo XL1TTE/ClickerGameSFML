@@ -54,7 +54,7 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     healthBar->DefineLayout({xl::Layout::VerticalBottom, xl::Layout::HorizontalLeft});
     healthBar->Margin({32, 32});
 
-    auto toShop = std::make_shared<SceneSwitchButton>(*SPR_MAIN_SCENE_BUTTON(), SHOP_SCENE);
+    auto toShop = std::make_shared<SceneSwitchButton>(*SPR_TO_SHOP_BUTTON(), SHOP_SCENE);
     toShop->SetParent(root);
     toShop->DefineLayout({xl::Layout::HorizontalRight, xl::Layout::VerticalBottom});
     toShop->Margin({32, 32});
@@ -62,7 +62,7 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     RegisterEvent(xl::xlEngine::GetBus().subscribe<GoldChangedSignal>(
         [goldText](const GoldChangedSignal &signal)
         {
-            goldText->SetText(std::to_string(signal.m_value));
+            goldText->SetText(std::to_string(static_cast<int>(signal.m_value)));
         }));
     RegisterEvent(xl::xlEngine::GetBus().subscribe<MonsterAttackedSignal>(
         [](const MonsterAttackedSignal &signal)

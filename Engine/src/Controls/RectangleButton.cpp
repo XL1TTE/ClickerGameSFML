@@ -55,7 +55,7 @@ sf::Vector2<float> RectangleButton::GetSize() const
 
 void RectangleButton::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
-    LayoutObject::Draw(weak_ptr);
+    ApplyAllStyles();
     if (const auto renderer = weak_ptr.lock())
     {
         renderer->draw(*m_Mesh);

@@ -21,9 +21,21 @@ void IGameScene::WithObject(const std::shared_ptr<GameObject> &obj)
 {
     if (obj)
     {
-        m_Objects.push_back(obj);
+        // m_Objects.push_back(obj);
+        m_PendingObjectsToAdd.push_back(obj);
     }
 }
+void IGameScene::ProcessPendingObjects()
+{
+    std::vector<std::shared_ptr<GameObject>> objects_to_process;
+    objects_to_process.swap(m_PendingObjectsToAdd);
+    for (const auto &obj : objects_to_process)
+    {
+        m_Objects.push_back(obj);
+        obj->Awake();
+    }
+}
+
 void IGameScene::Awake() const
 {
     for (const auto &obj : m_Objects)
@@ -31,12 +43,14 @@ void IGameScene::Awake() const
         obj->Awake();
     }
 }
-void IGameScene::Update(const float dt) const
+void IGameScene::Update(const float dt)
 {
     for (const auto &obj : m_Objects)
     {
         obj->Update(dt);
     }
+
+    ProcessPendingObjects();
 }
 void IGameScene::Draw(const std::weak_ptr<sf::RenderTarget> &drawer) const
 {

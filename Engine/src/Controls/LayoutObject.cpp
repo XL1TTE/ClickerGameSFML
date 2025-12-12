@@ -176,7 +176,12 @@ void LayoutObject<T>::DefineLayout(std::vector<Layout> &&styles)
 template <typename T>
 void LayoutObject<T>::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
-    ApplyAllStyles();
+    weak_ptr.lock()->draw(*m_Mesh);
+}
+template <typename T>
+sf::Vector2<float> LayoutObject<T>::GetSize() const
+{
+    return m_Mesh->getGlobalBounds().size;
 }
 
 template class LayoutObject<sf::RectangleShape>;

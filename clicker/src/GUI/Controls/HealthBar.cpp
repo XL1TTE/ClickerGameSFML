@@ -23,7 +23,7 @@ sf::Vector2<float> HealthBar::GetSize() const
 }
 void HealthBar::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
-    LayoutObject::Draw(weak_ptr); // <-- Layouts
+    ApplyAllStyles(); // <-- Layouts
 
     m_fillArea->setOrigin(m_Mesh->getOrigin());
     m_fillArea->setPosition(m_Mesh->getPosition());

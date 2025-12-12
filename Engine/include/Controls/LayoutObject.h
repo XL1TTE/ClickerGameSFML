@@ -43,8 +43,6 @@ class LayoutObject : public GameObject
     std::vector<Layout> m_Layouts;
     Margin              m_margin;
 
-    virtual void ApplyAllStyles() const;
-
     [[nodiscard]] sf::Vector2f AddMargin(const sf::Vector2f &size) const;
 
     void PivotToCenter() const;
@@ -59,8 +57,10 @@ class LayoutObject : public GameObject
   public:
     [[nodiscard]] sf::Vector2<float> GetPosition() const override;
     void                             Margin(const Margin &margin);
+    virtual void                     ApplyAllStyles() const;
     void                             DefineLayout(std::vector<Layout> &&styles);
     void                             Draw(const std::weak_ptr<sf::RenderTarget> &) override;
+    [[nodiscard]] sf::Vector2<float> GetSize() const override;
 };
 
 } // namespace xl

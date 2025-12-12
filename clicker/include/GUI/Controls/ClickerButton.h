@@ -4,9 +4,11 @@
 #ifndef EARN_POINT_BUTTON
 #define EARN_POINT_BUTTON
 #include "Controls/RectangleButton.h"
+#include "Data/GameSession.h"
 #include "EventSystems/Events/IPointerClickHandler.h"
 #include "EventSystems/Events/IPointerEnterHandler.h"
 #include "EventSystems/Events/IPointerExitHandler.h"
+#include "G.h"
 
 class ClickerButton final : public xl::RectangleButton,
                             public xl::IPointerEnterHandler,
@@ -19,9 +21,13 @@ class ClickerButton final : public xl::RectangleButton,
 
     bool Contains(sf::Vector2<float> point) override;
 
+    void               Awake() override;
     void               OnPointerClick(const sf::Event::MouseButtonPressed &event) override;
     void               OnPointerEnter(PointerEnterEvent event) override;
     void               OnPointerExit(PointerExitEvent event) override;
     sf::Vector2<float> GetSize() const override;
+
+    std::shared_ptr<GameSession::IStat> m_gold_per_click;
+    std::shared_ptr<GameSession::IStat> m_strong_gold_per_click;
 };
 #endif // EARN_POINT_BUTTON

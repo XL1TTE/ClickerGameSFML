@@ -14,14 +14,13 @@ class Sprite;
 }
 class BaseMonster final : public xl::LayoutObject<sf::Sprite>,
                           public xl::IPointerEnterHandler,
-                          public xl::IPointerClickHandler,
-                          public std::enable_shared_from_this<BaseMonster>
+                          public xl::IPointerClickHandler
 {
   public:
-    explicit BaseMonster(const sf::Sprite &sprite, const float damage, const float cooldown);
+    explicit BaseMonster(const sf::Sprite &sprite, float damage, float cooldown);
     BaseMonster(const BaseMonster &other);
 
-    void Update(const float dt) override;
+    void Update(float dt) override;
 
     bool isDied;
 

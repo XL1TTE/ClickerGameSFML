@@ -29,11 +29,15 @@ struct GameSession
 
     struct IStat
     {
+        IStat(int level = 0, int maxLevel = 99, float cost = 10.0f)
+            : m_level(level), m_maxLevel(maxLevel), m_cost(cost)
+        {
+        }
         virtual ~IStat() = default;
 
-        int m_level    = 1;
-        int m_maxLevel = 99;
-        int m_cost     = 10;
+        int   m_level;
+        int   m_maxLevel;
+        float m_cost;
 
         [[nodiscard]] virtual double value() const = 0;
         virtual void                 levelUp()
@@ -42,13 +46,13 @@ struct GameSession
             {
                 return;
             }
-            ++m_level;
+            m_level += 1;
         }
         virtual bool isLevelCaped()
         {
             return m_level >= m_maxLevel;
         }
-        virtual int getCost()
+        virtual float getCost()
         {
             return m_cost;
         }
@@ -56,18 +60,47 @@ struct GameSession
 
     struct GoldPerClick final : IStat
     {
+        GoldPerClick()
+            : IStat(1, 99, 10.f)
+        {
+        }
         [[nodiscard]] double value() const override
         {
             return std::pow(m_level, 2);
         }
-        int getCost() override
+        float getCost() override
         {
-            return std::pow(m_level, 2) * m_cost;
+            return m_cost * static_cast<float>(std::pow(m_level + 1, 2));
+        }
+    };
+    struct StrongGoldPerClick final : IStat
+    {
+        StrongGoldPerClick()
+            : IStat(0, 10, 100.f)
+        {
+        }
+        [[nodiscard]] double value() const override
+        {
+            if (m_level < 1)
+            {
+                return 0;
+            }
+            return std::pow(m_level + 1, 3);
+        }
+        float getCost() override
+        {
+            if (m_level < 1)
+            {
+                return 400.f;
+            }
+            return std::pow(m_level + 1, 3) * m_cost;
         }
     };
 
     std::unordered_map<std::string, std::shared_ptr<IStat>> m_Stats = {
-        {"gold_per_click", std::make_shared<GoldPerClick>()}};
+        {"gold_per_click", std::make_shared<GoldPerClick>()},
+        {"strong_gold_per_click", std::make_shared<StrongGoldPerClick>()},
+    };
 };
 
 inline float GameSession::GetGold() const

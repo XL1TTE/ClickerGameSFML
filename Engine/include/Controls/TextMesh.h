@@ -6,10 +6,10 @@
 #define XLENGINE_TEXT_MESH_H
 #include "Behaviour/GameObject.h"
 #include "LayoutObject.h"
+#include "SFML/Graphics/Text.hpp"
 
 namespace sf
 {
-class Text;
 class Font;
 class RenderTarget;
 class Color;
@@ -27,13 +27,13 @@ class TextMesh final : public LayoutObject<sf::Text>
     void Draw(const std::weak_ptr<sf::RenderTarget> &) override;
 
   public:
-    TextMesh          &SetText(const std::string &text);
-    TextMesh          &SetColor(sf::Color color);
-    TextMesh          &SetFontSize(unsigned int size);
-    TextMesh          &AlignCenter();
-    sf::Vector2<float> GetSize() const override;
-    sf::Vector2<float> GetPosition() const override;
-    sf::Transform      GetTransform() const override;
+    TextMesh                        &SetText(const std::string &text);
+    TextMesh                        &SetColor(sf::Color color);
+    TextMesh                        &SetFontSize(unsigned int size);
+    TextMesh                        &AlignCenter();
+    [[nodiscard]] sf::Vector2<float> GetSize() const override;
+    [[nodiscard]] sf::Vector2<float> GetPosition() const override;
+    [[nodiscard]] sf::Transform      GetTransform() const override;
 
     void OnDestroy() override;
 };
