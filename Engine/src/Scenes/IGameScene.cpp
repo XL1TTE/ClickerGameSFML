@@ -7,6 +7,10 @@
 
 using namespace xl;
 
+IGameScene::~IGameScene()
+{
+    Destroy();
+}
 IGameScene::IGameScene(const std::weak_ptr<sf::RenderTarget> &)
 {
 }
@@ -36,12 +40,26 @@ void IGameScene::ProcessPendingObjects()
     }
 }
 
-void IGameScene::Awake() const
+void IGameScene::Awake()
 {
     for (const auto &obj : m_Objects)
     {
         obj->Awake();
     }
+    std::cout << "OnAwake" << std::endl;
+    OnAwake();
+}
+void IGameScene::OnAwake()
+{
+}
+void IGameScene::OnEnable()
+{
+}
+void IGameScene::OnDisable()
+{
+}
+void IGameScene::OnUpdate(float dt)
+{
 }
 void IGameScene::Update(const float dt)
 {
@@ -51,6 +69,7 @@ void IGameScene::Update(const float dt)
     }
 
     ProcessPendingObjects();
+    OnUpdate(dt);
 }
 void IGameScene::Draw(const std::weak_ptr<sf::RenderTarget> &drawer) const
 {

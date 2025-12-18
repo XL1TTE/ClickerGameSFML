@@ -24,10 +24,6 @@ enum SceneName
 class Scenes
 {
   public:
-    static void LoadScenes(const std::weak_ptr<sf::RenderTarget> &);
-
-  public:
-    static std::unique_ptr<xl::IGameScene> GetMainScene();
     static std::unique_ptr<xl::IGameScene> CreateMainScene(const std::weak_ptr<sf::RenderTarget> &renderer);
     static std::unique_ptr<xl::IGameScene> CreateShopScene(const std::weak_ptr<sf::RenderTarget> &renderer);
     static void                            SwitchScene(const std::weak_ptr<sf::RenderTarget> &renderer, const SceneName &sceneName);

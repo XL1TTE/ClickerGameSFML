@@ -91,6 +91,20 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
     WithObject(monsterSpawner);
     WithObject(toShop);
 }
+void MainScene::OnAwake()
+{
+    m_gold_per_second = G::GetSession().m_Stats["gold_per_second"];
+}
+void MainScene::OnUpdate(float dt)
+{
+    if (m_timer >= 1.f)
+    {
+        G::GetSession().AddGold(m_gold_per_second->value());
+        m_timer = 0.f;
+    }
+    m_timer += dt;
+}
+
 std::unique_ptr<xl::IGameScene> MainScene::clone() const
 {
     return std::make_unique<MainScene>(*this);

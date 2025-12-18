@@ -43,7 +43,7 @@ void UpgradeButton::Awake()
 {
     m_Stat = G::GetSession().m_Stats[m_UpgradeID];
 
-    this->SetActive(CanAffordBuy(G::GetSession().GetGold()));
+    UpdateState();
 }
 
 void UpgradeButton::UpdateState()
@@ -53,7 +53,7 @@ void UpgradeButton::UpdateState()
 
 bool UpgradeButton::CanAffordBuy(const float &gold) const
 {
-    std::cout << std::format("Cost: {0}, Gold: {1}", m_Stat.lock()->getCost(), gold) << std::endl;
+    // std::cout << std::format("Cost: {0}, Gold: {1}", m_Stat.lock()->getCost(), gold) << std::endl;
     if (m_Stat.lock()->getCost() > gold)
     {
         return false;
@@ -77,6 +77,7 @@ void UpgradeButton::SetActive(const bool &isActive)
 
 void UpgradeButton::Draw(const std::weak_ptr<sf::RenderTarget> &weak_ptr)
 {
+    UpdateState();
     if (m_Stat.lock()->isLevelCaped())
     {
         return;

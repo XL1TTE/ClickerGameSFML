@@ -4,6 +4,7 @@
 
 #include "GUI/Controls/HealthBar.h"
 
+#include "G.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SignalBus/SignalBus.h"
@@ -36,6 +37,10 @@ void HealthBar::Awake()
     RegisterEvent<PlayerHealthChanged>(
         [&](const PlayerHealthChanged &signal)
         { OnPlayerHealthChanged(signal); });
+
+    auto [x, y]     = m_fillArea->getSize();
+    auto [bgX, bgY] = m_Mesh->getSize();
+    m_fillArea->setSize({bgX * G::GetSession().GetHealthPercent(), y});
 }
 
 void HealthBar::OnPlayerHealthChanged(const PlayerHealthChanged &signal) const

@@ -36,7 +36,7 @@ class IGameScene
     IGameScene &operator=(const IGameScene &)     = default;
     IGameScene &operator=(IGameScene &&) noexcept = default;
 
-    virtual ~IGameScene() = default;
+    virtual ~IGameScene();
 
   protected:
     explicit IGameScene(const std::weak_ptr<sf::RenderTarget> &);
@@ -52,10 +52,14 @@ class IGameScene
     void ProcessPendingObjects();
 
   public:
-    void Awake() const;
-    void Update(const float dt);
-    void Draw(const std::weak_ptr<sf::RenderTarget> &) const;
-    void Destroy();
+    void         Awake();
+    virtual void OnAwake();
+    virtual void OnEnable();
+    virtual void OnDisable();
+    virtual void OnUpdate(float dt);
+    void         Update(float dt);
+    void         Draw(const std::weak_ptr<sf::RenderTarget> &) const;
+    void         Destroy();
 
     [[nodiscard]] virtual std::unique_ptr<IGameScene> clone() const = 0;
 

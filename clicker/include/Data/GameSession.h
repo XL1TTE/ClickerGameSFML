@@ -16,8 +16,8 @@ struct GameSession
 {
   private:
     float m_healthPercent = 1;
-    int   m_maxHealth     = 10;
-    int   m_playerHealth  = 10;
+    int   m_maxHealth     = 100;
+    int   m_playerHealth  = 100;
 
     float m_gold = 0;
 
@@ -96,10 +96,26 @@ struct GameSession
             return std::pow(m_level + 1, 3) * m_cost;
         }
     };
+    struct GoldPerSecond final : IStat
+    {
+        GoldPerSecond()
+            : IStat(0, 99, 50.f)
+        {
+        }
+        [[nodiscard]] double value() const override
+        {
+            return std::pow(m_level, 2);
+        }
+        float getCost() override
+        {
+            return m_cost * static_cast<float>(std::pow(m_level + 1, 2));
+        }
+    };
 
     std::unordered_map<std::string, std::shared_ptr<IStat>> m_Stats = {
         {"gold_per_click", std::make_shared<GoldPerClick>()},
         {"strong_gold_per_click", std::make_shared<StrongGoldPerClick>()},
+        {"gold_per_second", std::make_shared<GoldPerSecond>()},
     };
 };
 
