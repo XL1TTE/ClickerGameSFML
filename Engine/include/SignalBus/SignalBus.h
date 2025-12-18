@@ -69,7 +69,6 @@ class Delegate final : public IDelegate
     }
 
   private:
-    // Stores handlers in a simple vector
     std::unordered_map<SubscriptionToken, HandlerFunction> m_handlers;
     std::atomic<SubscriptionToken>                         m_nextToken{1};
 };

@@ -18,12 +18,6 @@ int main()
 
     xlEngine::SetScene(Scenes::CreateMainScene(window));
 
-    xlEngine::GetBus().subscribe<SceneSwitchRequest>(
-        [window](const SceneSwitchRequest &signal)
-        {
-            Scenes::SwitchScene(window, signal.m_scene);
-        });
-
     while (xlEngine::IsExited() == false)
     {
         xlEngine::Update();

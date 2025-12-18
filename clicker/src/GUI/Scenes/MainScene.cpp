@@ -26,10 +26,9 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
 {
     const auto root = std::make_shared<xl::RootContainer>(renderer);
 
-    const auto clickerButton = std::make_shared<ClickerButton>(sf::RectangleShape({200.f, 100.f}));
-
+    const auto clickerButton = std::make_shared<ClickerButton>(
+        sf::RectangleShape({200.f, 100.f}));
     clickerButton->SetLabel("Click", Fonts::FONT_DEFAULT);
-
     clickerButton->SetParent(root);
     clickerButton->DefineLayout(
         {xl::Layout::HorizontalCenter, xl::Layout::VerticalBottom});
@@ -46,8 +45,8 @@ MainScene::MainScene(const std::weak_ptr<sf::RenderTarget> &renderer)
         {xl::Layout::HorizontalRight, xl::Layout::VerticalTop});
 
     auto monsterSpawner = std::make_shared<MonsterSpawner>(
-        MonsterSpawner(root, 5.f, 10.f,
-                       BaseMonster(*SPR_MONSTER(), 5, 3)));
+        MonsterSpawner(root, 2.f, 5.f,
+                       BaseMonster(*SPR_MONSTER(), 5, 3, 25)));
 
     const auto healthBar = std::make_shared<HealthBar>(sf::RectangleShape({128.f, 32.f}));
     healthBar->SetParent(root);
